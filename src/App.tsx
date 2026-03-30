@@ -53,10 +53,10 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass-nav py-3 shadow-sm' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-display font-extrabold text-brand-primary">Titan</span>
-          <span className="text-2xl font-display font-extrabold text-brand-ink">Studio</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-primary">Titan</span>
+          <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-ink">Studio</span>
         </div>
 
         {/* Desktop Nav */}
@@ -113,35 +113,36 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section className="pt-32 pb-20 px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
+          className="text-center lg:text-left"
         >
-          <div className="inline-flex items-center gap-2 bg-brand-secondary/10 text-[#6c5000] px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest mb-6">
-            <Star size={14} fill="currentColor" />
+          <div className="inline-flex items-center gap-2 bg-brand-secondary/10 text-[#6c5000] px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-widest mb-6">
+            <Star size={12} className="sm:w-3.5 sm:h-3.5" fill="currentColor" />
             TOP RATED PLUS SELLER ON FIVERR
           </div>
           
-          <h1 className="text-6xl md:text-7xl font-display font-extrabold leading-[1.1] mb-8">
+          <h1 className="text-3xl sm:text-6xl md:text-7xl font-display font-extrabold leading-[1.1] mb-6 sm:mb-8">
             Bringing <span className="text-brand-primary">Magic</span> to Every Page.
           </h1>
           
-          <p className="text-xl text-brand-ink/60 leading-relaxed mb-10 max-w-lg">
+          <p className="text-base sm:text-xl text-brand-ink/60 leading-relaxed mb-8 sm:mb-10 max-w-lg mx-auto lg:mx-0">
             Custom high-energy illustrations for children's books, character design, and whimsical worlds. Let's tell your story together.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <button className="btn-primary">Request Quote</button>
-            <button className="btn-secondary">View Portfolio</button>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-12 justify-center lg:justify-start">
+            <button className="btn-primary w-full sm:w-auto">Request Quote</button>
+            <button className="btn-secondary w-full sm:w-auto">View Portfolio</button>
           </div>
           
-          <div className="flex items-center gap-8 opacity-40 grayscale">
-            <span className="text-xs font-bold uppercase tracking-widest">AS SEEN ON</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Fiverr_Logo_09.2020.svg/1200px-Fiverr_Logo_09.2020.svg.png" alt="Fiverr" className="h-5" referrerPolicy="no-referrer" />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Upwork_logo.svg/1200px-Upwork_logo.svg.png" alt="Upwork" className="h-5" referrerPolicy="no-referrer" />
+          <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-8 opacity-40 grayscale overflow-hidden">
+            <span className="text-[10px] font-bold uppercase tracking-widest shrink-0">AS SEEN ON</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Fiverr_Logo_09.2020.svg/1200px-Fiverr_Logo_09.2020.svg.png" alt="Fiverr" className="h-4 sm:h-5" referrerPolicy="no-referrer" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Upwork_logo.svg/1200px-Upwork_logo.svg.png" alt="Upwork" className="h-4 sm:h-5" referrerPolicy="no-referrer" />
           </div>
         </motion.div>
 
@@ -149,21 +150,21 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative grid grid-cols-2 gap-4"
+          className="relative grid grid-cols-2 gap-3 sm:gap-4"
         >
-          <div className="space-y-4 pt-12">
-            <div className="rounded-3xl overflow-hidden aspect-square shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+          <div className="space-y-3 sm:space-y-4 pt-8 sm:pt-12">
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-square shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
               <img src="https://picsum.photos/seed/fox/600/600" alt="Fox Illustration" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </div>
-            <div className="rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
               <img src="https://picsum.photos/seed/room/600/750" alt="Cozy Room" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </div>
           </div>
-          <div className="space-y-4">
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
               <img src="https://picsum.photos/seed/dragon/600/450" alt="Dragon Illustration" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </div>
-            <div className="rounded-3xl overflow-hidden aspect-square shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-square shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-500">
               <img src="https://picsum.photos/seed/party/600/600" alt="Animal Party" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </div>
           </div>
@@ -210,26 +211,26 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-24 px-6 bg-gray-50/50">
+    <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-gray-50/50">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-6 sm:gap-8 text-center md:text-left">
           <div>
-            <h2 className="text-5xl font-display font-extrabold mb-4">Creative Services</h2>
-            <p className="text-lg text-brand-ink/60 max-w-md">
+            <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-3 sm:mb-4">Creative Services</h2>
+            <p className="text-sm sm:text-lg text-brand-ink/60 max-w-md mx-auto md:mx-0">
               Simple, transparent pricing for every stage of your storytelling journey.
             </p>
           </div>
           
-          <div className="bg-white p-1.5 rounded-full shadow-sm inline-flex border border-gray-100">
+          <div className="bg-white p-1 rounded-full shadow-sm inline-flex border border-gray-100 self-center md:self-auto">
             <button 
               onClick={() => setActiveTab('fiverr')}
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${activeTab === 'fiverr' ? 'bg-brand-ink text-white shadow-md' : 'text-brand-ink/50 hover:text-brand-ink'}`}
+              className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${activeTab === 'fiverr' ? 'bg-brand-ink text-white shadow-md' : 'text-brand-ink/50 hover:text-brand-ink'}`}
             >
               Fiverr Bookings
             </button>
             <button 
               onClick={() => setActiveTab('direct')}
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${activeTab === 'direct' ? 'bg-brand-ink text-white shadow-md' : 'text-brand-ink/50 hover:text-brand-ink'}`}
+              className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${activeTab === 'direct' ? 'bg-brand-ink text-white shadow-md' : 'text-brand-ink/50 hover:text-brand-ink'}`}
             >
               Direct Hire
             </button>
@@ -288,16 +289,16 @@ const Stats = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 -mt-12 relative z-10">
-      <div className="bg-white rounded-3xl shadow-xl shadow-brand-ink/5 p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-8 border border-gray-100">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 sm:-mt-12 relative z-10">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl shadow-brand-ink/5 p-5 sm:p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 border border-gray-100">
         {stats.map((stat, idx) => (
-          <div key={stat.label} className={`flex items-center justify-center gap-4 ${idx !== stats.length - 1 ? 'md:border-r border-gray-100' : ''}`}>
-            <div className="bg-gray-50 p-3 rounded-full">
+          <div key={stat.label} className={`flex items-center justify-center gap-3 sm:gap-4 ${idx !== stats.length - 1 ? 'md:border-r border-gray-100' : ''}`}>
+            <div className="bg-gray-50 p-2.5 sm:p-3 rounded-full shrink-0">
               {stat.icon}
             </div>
-            <div>
-              <div className="text-2xl font-display font-extrabold text-brand-ink">{stat.value}</div>
-              <div className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">{stat.label}</div>
+            <div className="text-center md:text-left">
+              <div className="text-lg sm:text-2xl font-display font-extrabold text-brand-ink">{stat.value}</div>
+              <div className="text-[9px] sm:text-xs font-bold text-brand-ink/40 uppercase tracking-widest">{stat.label}</div>
             </div>
           </div>
         ))}
@@ -317,17 +318,17 @@ const Gallery = () => {
   ];
 
   return (
-    <section id="portfolio" className="py-24 px-6">
+    <section id="portfolio" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-display font-extrabold mb-8">World Building Gallery</h2>
+        <div className="text-center mb-10 sm:mb-16">
+          <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-6 sm:mb-8">World Building Gallery</h2>
           
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex overflow-x-auto sm:flex-wrap justify-start sm:justify-center gap-2 sm:gap-3 pb-4 sm:pb-0 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
             {categories.map((cat) => (
               <button 
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${filter === cat ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' : 'bg-gray-100 text-brand-ink/60 hover:bg-gray-200'}`}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${filter === cat ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' : 'bg-gray-100 text-brand-ink/60 hover:bg-gray-200'}`}
               >
                 {cat}
               </button>
@@ -375,46 +376,46 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-24 px-6 bg-brand-primary/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-        <div>
-          <h2 className="text-5xl font-display font-extrabold mb-12 leading-tight">
+    <section className="py-16 sm:py-24 px-4 sm:px-6 bg-brand-primary/5">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-20 items-center">
+        <div className="text-center lg:text-left">
+          <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-8 sm:mb-12 leading-tight">
             Why Work with <span className="text-brand-primary italic">Titan Studio?</span>
           </h2>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-6 sm:gap-y-10 mb-10 sm:mb-12 text-left">
             {features.map((f) => (
-              <div key={f.title} className="space-y-3">
+              <div key={f.title} className="space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="bg-brand-primary/10 text-brand-primary p-2 rounded-lg">
+                  <div className="bg-brand-primary/10 text-brand-primary p-2 rounded-lg shrink-0">
                     {f.icon}
                   </div>
-                  <h4 className="font-display font-bold text-lg">{f.title}</h4>
+                  <h4 className="font-display font-bold text-base sm:text-lg">{f.title}</h4>
                 </div>
-                <p className="text-sm text-brand-ink/60 leading-relaxed">
+                <p className="text-xs sm:text-sm text-brand-ink/60 leading-relaxed">
                   {f.desc}
                 </p>
               </div>
             ))}
           </div>
           
-          <button className="btn-primary">
+          <button className="btn-primary w-full sm:w-auto">
             Visit my Fiverr Profile <ExternalLink size={18} />
           </button>
         </div>
 
-        <div className="relative">
-          <div className="rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/3]">
+        <div className="relative mt-8 lg:mt-0">
+          <div className="rounded-2xl sm:rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/3]">
             <img src="https://picsum.photos/seed/drawing/800/600" alt="Artist Drawing" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           
-          <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-3xl shadow-2xl flex items-center gap-4 border border-gray-100">
-            <div className="bg-brand-secondary/10 text-brand-secondary p-3 rounded-full">
-              <Star size={24} fill="currentColor" />
+          <div className="absolute -bottom-6 -left-4 sm:-bottom-8 sm:-left-8 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl flex items-center gap-3 sm:gap-4 border border-gray-100">
+            <div className="bg-brand-secondary/10 text-brand-secondary p-2 sm:p-3 rounded-full">
+              <Star size={20} className="sm:w-6 sm:h-6" fill="currentColor" />
             </div>
             <div>
-              <div className="text-2xl font-display font-extrabold">5.0 Star</div>
-              <div className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">Verified Rating</div>
+              <div className="text-xl sm:text-2xl font-display font-extrabold">5.0 Star</div>
+              <div className="text-[10px] font-bold text-brand-ink/40 uppercase tracking-widest">Verified Rating</div>
             </div>
           </div>
         </div>
@@ -449,14 +450,14 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-24 px-6">
+    <section className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <div className="inline-block bg-brand-primary/10 text-brand-primary px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4">
             Loved by Authors Worldwide
           </div>
-          <h2 className="text-5xl font-display font-extrabold mb-4">Wall of Love</h2>
-          <p className="text-lg text-brand-ink/60 max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-4">Wall of Love</h2>
+          <p className="text-sm sm:text-lg text-brand-ink/60 max-w-2xl mx-auto">
             Real stories from real clients who transformed their vision into reality at Titan Studio.
           </p>
         </div>
@@ -502,21 +503,21 @@ const About = () => {
   return (
     <div id="about" className="overflow-hidden">
       {/* Hero Section: The Artist's Canvas */}
-      <section className="relative px-8 py-20 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
+      <section className="relative px-4 sm:px-8 py-12 sm:py-20 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex-1 space-y-8 z-10"
+          className="flex-1 space-y-6 sm:space-y-8 z-10 text-center lg:text-left"
         >
-          <div className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase">
+          <div className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-widest uppercase">
             <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
             Top Rated Seller
           </div>
-          <h2 className="font-headline text-5xl md:text-7xl font-extrabold text-on-surface tracking-tighter leading-[1.1]">
+          <h2 className="font-headline text-3xl sm:text-5xl md:text-7xl font-extrabold text-on-surface tracking-tighter leading-[1.1]">
             Every sketch tells a <span className="text-primary italic">story.</span>
           </h2>
-          <p className="text-lg text-on-surface-variant leading-relaxed max-w-xl">
+          <p className="text-sm sm:text-lg text-on-surface-variant leading-relaxed max-w-xl mx-auto lg:mx-0">
             I'm Titan, a visual storyteller dedicated to bringing the magic of childhood wonder to life. For over a decade, I've been turning whispers of imagination into vibrant, tactile realities for authors around the globe.
           </p>
         </motion.div>
@@ -525,12 +526,12 @@ const About = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="flex-1 relative"
+          className="flex-1 relative w-full max-w-lg lg:max-w-none"
         >
           <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
             <img 
               alt="Artist at work" 
-              className="w-full h-[500px] object-cover" 
+              className="w-full h-[350px] sm:h-[500px] object-cover" 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_kp0NbjwQQvVzZ1Lm_gvJJK8JL5dciR4lVUPovINrRNVj8_UL2FqBax0PkFRyi3qjycT62bVu2xQdi3Z77qyCTrFtq5Jrs-9Cy4O8IsPyGPmtLxphWwggjdB6L45p8HYknhZu1mZbrxDEUOghifQqiNiUF-CZDqAE45xQAoZaQ97IFhnjD1ctjfXQVrIbJzZStQGuT1JSkFrWlzXoPtPans_4_ItiQCREvsf6qTSWDbX8O2BnmPCkNcjo5zNZDY_viihFIzj615Y"
               referrerPolicy="no-referrer"
             />
@@ -541,26 +542,26 @@ const About = () => {
       </section>
 
       {/* Journey Section: Bento Grid */}
-      <section className="bg-surface-container-low py-24 px-8">
+      <section className="bg-surface-container-low py-16 sm:py-24 px-6 sm:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="font-headline text-4xl font-bold mb-16 text-center">My Journey as a Creator</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-12 sm:mb-16 text-center">My Journey as a Creator</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Bento Item 1 */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="md:col-span-2 bg-surface-container-lowest p-10 rounded-xl flex flex-col justify-between group hover:shadow-lg transition-shadow"
+              className="md:col-span-2 bg-surface-container-lowest p-6 sm:p-10 rounded-xl flex flex-col justify-between group hover:shadow-lg transition-shadow"
             >
               <div className="space-y-4">
-                <span className="material-symbols-outlined text-primary text-4xl">auto_stories</span>
-                <h3 className="font-headline text-2xl font-bold">The Fiverr Evolution</h3>
-                <p className="text-on-surface-variant">Starting as a hobbyist, I found my tribe on Fiverr. Today, as a Top-Rated Seller, I've collaborated with over 500 authors, helping them self-publish dreams that sit on bedside tables across six continents.</p>
+                <span className="material-symbols-outlined text-primary text-3xl sm:text-4xl">auto_stories</span>
+                <h3 className="font-headline text-xl sm:text-2xl font-bold">The Fiverr Evolution</h3>
+                <p className="text-sm sm:text-base text-on-surface-variant leading-relaxed">Starting as a hobbyist, I found my tribe on Fiverr. Today, as a Top-Rated Seller, I've collaborated with over 500 authors, helping them self-publish dreams that sit on bedside tables across six continents.</p>
               </div>
-              <div className="mt-8 flex gap-4 overflow-hidden">
-                <img className="h-24 w-32 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKM1zHBeGx9PAPqpzMl8bHQkUqcwRomsSnAJq0HgPKttMG-CUmDKCZV7Xo-pNEUWj8-KukcqI8EbpvDZVWPpyRWeyeJQMMiwuxp6g9yn6jq8qyl1ykoDq7u5tp9vF8mdv6o-4SSLbO8_MwabjaBlL87iVXP9CYqF1hU8XWbSTUWd_epRPX-tg2yC_mOzUrP09JXqqWZnS6M8eqyR537xLXQIJAwA7AiePuoPAjVgPTok0pDF6AifHLXmxRgGE1SaAzKljGJorkSHw" referrerPolicy="no-referrer" />
-                <img className="h-24 w-32 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD__RK6_DKSidxTnciyxzTRcHlU3Gy76L2tFRGNIKtGTffc2229gqjDpolZ-77VULT0ciAoaACOHe-N9tFBxeL7UNWmBPTbkKaU5n9aqtjvD882RU_PvZfzyiHrTOscRm8zEn1cfVLXJp2gDqRe-lmfGqHLi7C0t9i0EJwRjE5LdaT3TiBNwEw-ZZj4-FoBhMDrGaIzSXOb12bbD33ZCpUEcfCCAKZk8tACAg27tfMuG8_KVerwwDdJo18AjnErQPqCYw5P5qIM9Zs" referrerPolicy="no-referrer" />
-                <img className="h-24 w-32 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHcq81QVulU_PJtpxp2f44IVzAm3ecBXncEiUeApKJxY-iwLi2wcefPFG4f1cx9foFLoAB5PIZHx86Ahb415_Zd0IYpPu6Im-Dqpv1dOenQaPjWP9Ey3848KiwwlJI82DL9nTzP2Ki7YAcA97WPOPTbpD4OWeAfUnBivA-hc6hB3lwFHxYgTwD2wgKtZpXLTCTgr_Vr7XzX8RLAdTAzxZWlyCtcKN1W5p2iO0oeqHihWab9Q3aEE1x84prGDUdfk6HVDS3gM2WTaY" referrerPolicy="no-referrer" />
+              <div className="mt-8 flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                <img className="h-20 sm:h-24 w-28 sm:w-32 object-cover rounded-lg shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKM1zHBeGx9PAPqpzMl8bHQkUqcwRomsSnAJq0HgPKttMG-CUmDKCZV7Xo-pNEUWj8-KukcqI8EbpvDZVWPpyRWeyeJQMMiwuxp6g9yn6jq8qyl1ykoDq7u5tp9vF8mdv6o-4SSLbO8_MwabjaBlL87iVXP9CYqF1hU8XWbSTUWd_epRPX-tg2yC_mOzUrP09JXqqWZnS6M8eqyR537xLXQIJAwA7AiePuoPAjVgPTok0pDF6AifHLXmxRgGE1SaAzKljGJorkSHw" referrerPolicy="no-referrer" />
+                <img className="h-20 sm:h-24 w-28 sm:w-32 object-cover rounded-lg shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD__RK6_DKSidxTnciyxzTRcHlU3Gy76L2tFRGNIKtGTffc2229gqjDpolZ-77VULT0ciAoaACOHe-N9tFBxeL7UNWmBPTbkKaU5n9aqtjvD882RU_PvZfzyiHrTOscRm8zEn1cfVLXJp2gDqRe-lmfGqHLi7C0t9i0EJwRjE5LdaT3TiBNwEw-ZZj4-FoBhMDrGaIzSXOb12bbD33ZCpUEcfCCAKZk8tACAg27tfMuG8_KVerwwDdJo18AjnErQPqCYw5P5qIM9Zs" referrerPolicy="no-referrer" />
+                <img className="h-20 sm:h-24 w-28 sm:w-32 object-cover rounded-lg shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHcq81QVulU_PJtpxp2f44IVzAm3ecBXncEiUeApKJxY-iwLi2wcefPFG4f1cx9foFLoAB5PIZHx86Ahb415_Zd0IYpPu6Im-Dqpv1dOenQaPjWP9Ey3848KiwwlJI82DL9nTzP2Ki7YAcA97WPOPTbpD4OWeAfUnBivA-hc6hB3lwFHxYgTwD2wgKtZpXLTCTgr_Vr7XzX8RLAdTAzxZWlyCtcKN1W5p2iO0oeqHihWab9Q3aEE1x84prGDUdfk6HVDS3gM2WTaY" referrerPolicy="no-referrer" />
               </div>
             </motion.div>
             {/* Bento Item 2 */}
@@ -569,12 +570,12 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="bg-primary text-on-primary p-10 rounded-xl flex flex-col justify-center items-center text-center space-y-6"
+              className="bg-primary text-on-primary p-8 sm:p-10 rounded-xl flex flex-col justify-center items-center text-center space-y-4 sm:space-y-6"
             >
-              <div className="text-6xl font-black">500+</div>
-              <p className="font-label font-bold uppercase tracking-widest text-primary-fixed">Stories Illustrated</p>
-              <div className="w-16 h-1 bg-primary-container rounded-full"></div>
-              <p className="text-sm opacity-90">Building worlds for the next generation of dreamers, one brushstroke at a time.</p>
+              <div className="text-5xl sm:text-6xl font-black">500+</div>
+              <p className="font-label font-bold uppercase tracking-widest text-primary-fixed text-xs sm:text-sm">Stories Illustrated</p>
+              <div className="w-12 sm:w-16 h-1 bg-primary-container rounded-full"></div>
+              <p className="text-xs sm:text-sm opacity-90">Building worlds for the next generation of dreamers, one brushstroke at a time.</p>
             </motion.div>
             {/* Bento Item 3 */}
             <motion.div 
@@ -582,11 +583,11 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="bg-tertiary-container text-on-tertiary-container p-10 rounded-xl space-y-4"
+              className="bg-tertiary-container text-on-tertiary-container p-8 sm:p-10 rounded-xl space-y-4"
             >
-              <span className="material-symbols-outlined text-tertiary text-4xl">palette</span>
-              <h3 className="font-headline text-2xl font-bold">The Technique</h3>
-              <p className="text-sm leading-relaxed">I blend traditional watercolor textures with digital precision. This creates a "warm" feel that digital-only art often misses, perfect for the tactile nature of children's books.</p>
+              <span className="material-symbols-outlined text-tertiary text-3xl sm:text-4xl">palette</span>
+              <h3 className="font-headline text-xl sm:text-2xl font-bold">The Technique</h3>
+              <p className="text-xs sm:text-sm leading-relaxed">I blend traditional watercolor textures with digital precision. This creates a "warm" feel that digital-only art often misses, perfect for the tactile nature of children's books.</p>
             </motion.div>
             {/* Bento Item 4 */}
             <motion.div 
@@ -594,16 +595,16 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="md:col-span-2 bg-surface-container-highest p-10 rounded-xl flex items-center gap-8"
+              className="md:col-span-2 bg-surface-container-highest p-6 sm:p-10 rounded-xl flex items-center gap-6 sm:gap-8"
             >
-              <div className="hidden sm:block shrink-0">
-                <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden shadow-md">
+              <div className="hidden xs:block shrink-0">
+                <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full border-4 border-white overflow-hidden shadow-md">
                   <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjwql2Dh9FaAUYMT5OnUP9FIEvXfHknJa5RkvFmKmHncmoIypz7lfFPJz6kmGkJfpjHIlUcYR5P-PB4n4pxWiP8FvGZyIsktVJ6w6Qzva7gLRkNg0ySzLuH1j30-8nihZybkRONyMtrWKJhNWIpCVqSCO0dU3bkMSWEnK_JtRnirblZc0tOih4ULmYUyFWZj-7QfnFPIZiliWXPJxTHpHB3FD0yBytMUm6Pz1G0DDQ5OMz8pJu51rdhPFtmF6VQlaVEySihLAspus" referrerPolicy="no-referrer" />
                 </div>
               </div>
               <div className="space-y-2">
-                <h3 className="font-headline text-xl font-bold italic">"Storytelling isn't just about the words; it's about the feeling a child gets when they turn the page."</h3>
-                <p className="text-sm font-semibold">— Titan, Lead Artist</p>
+                <h3 className="font-headline text-base sm:text-xl font-bold italic leading-snug">"Storytelling isn't just about the words; it's about the feeling a child gets when they turn the page."</h3>
+                <p className="text-xs sm:text-sm font-semibold">— Titan, Lead Artist</p>
               </div>
             </motion.div>
           </div>
@@ -618,15 +619,15 @@ const About = () => {
       </div>
 
       {/* Wall of Love: Testimonials */}
-      <section className="py-24 px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+    <section className="py-16 sm:py-24 px-6 sm:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-6">
           <div className="max-w-xl">
-            <h2 className="font-headline text-4xl font-bold mb-4">Wall of Love</h2>
-            <p className="text-on-surface-variant">Real words from authors who trusted Titan Studio with their precious stories.</p>
+            <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-4">Wall of Love</h2>
+            <p className="text-sm sm:text-base text-on-surface-variant">Real words from authors who trusted Titan Studio with their precious stories.</p>
           </div>
-          <button className="bg-surface-container-high text-on-surface px-8 py-3 rounded-full font-label font-bold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+          <button className="bg-surface-container-high text-on-surface px-6 sm:px-8 py-3 rounded-full font-label font-bold text-sm flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
             View Fiverr Profile
-            <span className="material-symbols-outlined">arrow_outward</span>
+            <span className="material-symbols-outlined text-lg">arrow_outward</span>
           </button>
         </div>
         <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
@@ -662,15 +663,15 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-24 px-8 overflow-hidden">
-        <div className="max-w-4xl mx-auto bg-primary rounded-xl p-12 text-center text-on-primary relative z-10">
-          <h2 className="font-headline text-4xl font-bold mb-6">Ready to start your story?</h2>
-          <p className="text-lg mb-10 opacity-90">Let's collaborate to create something magical that children will cherish forever.</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-on-primary text-primary px-10 py-4 rounded-full font-label font-bold text-lg hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-xl">
+      <section className="relative py-16 sm:py-24 px-6 sm:px-8 overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-primary rounded-2xl sm:rounded-xl p-8 sm:p-12 text-center text-on-primary relative z-10">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-6">Ready to start your story?</h2>
+          <p className="text-base sm:text-lg mb-8 sm:text-10 opacity-90">Let's collaborate to create something magical that children will cherish forever.</p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button className="bg-on-primary text-primary px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-label font-bold text-base sm:text-lg hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-xl">
               Hire Titan on Fiverr
             </button>
-            <button className="bg-transparent border-2 border-on-primary/30 text-on-primary px-10 py-4 rounded-full font-label font-bold text-lg hover:bg-white/10 transition-colors">
+            <button className="bg-transparent border-2 border-on-primary/30 text-on-primary px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-label font-bold text-base sm:text-lg hover:bg-white/10 transition-colors">
               View Portfolio
             </button>
           </div>
@@ -684,28 +685,28 @@ const About = () => {
 
 const Contact = () => {
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-7xl mx-auto bg-brand-ink rounded-[3rem] p-12 md:p-20 text-white overflow-hidden relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 relative z-10">
-          <div>
-            <h2 className="text-6xl font-display font-extrabold mb-8 leading-tight">
+    <section className="py-16 sm:py-24 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto bg-brand-ink rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 md:p-20 text-white overflow-hidden relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 relative z-10">
+          <div className="text-center lg:text-left">
+            <h2 className="text-3xl sm:text-6xl font-display font-extrabold mb-4 sm:mb-8 leading-tight">
               Let's Build Your World.
             </h2>
-            <p className="text-xl text-white/60 mb-12 leading-relaxed max-w-md">
+            <p className="text-sm sm:text-xl text-white/60 mb-8 sm:mb-12 leading-relaxed max-w-md mx-auto lg:mx-0">
               Have a large-scale project or need a unique visual identity? I offer custom packages for publishers and commercial brands.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-white text-brand-ink px-8 py-4 rounded-full font-display font-bold hover:bg-gray-100 transition-all">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <button className="bg-white text-brand-ink px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-display font-bold hover:bg-gray-100 transition-all text-sm sm:text-base w-full sm:w-auto">
                 Get a Custom Quote
               </button>
-              <button className="bg-white/10 text-white px-8 py-4 rounded-full font-display font-bold hover:bg-white/20 transition-all border border-white/10">
+              <button className="bg-white/10 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-display font-bold hover:bg-white/20 transition-all border border-white/10 text-sm sm:text-base w-full sm:w-auto">
                 Schedule a Consultation
               </button>
             </div>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/10">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/10 mt-6 lg:mt-0">
             <form className="space-y-6">
               <div>
                 <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">NAME</label>
@@ -751,18 +752,18 @@ const Contact = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 pt-20 pb-10 px-6">
+    <footer className="bg-gray-100 pt-16 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-display font-extrabold text-brand-primary">Titan</span>
-              <span className="text-2xl font-display font-extrabold text-brand-ink">Studio</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-16 sm:mb-20">
+          <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-2">
+              <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-primary">Titan</span>
+              <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-ink">Studio</span>
             </div>
-            <p className="text-brand-ink/50 text-sm leading-relaxed max-w-xs">
+            <p className="text-brand-ink/50 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
               Bringing magic to every page through vibrant illustrations and immersive character designs.
             </p>
-            <div className="flex gap-4">
+            <div className="flex justify-center sm:justify-start gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-ink/40 hover:text-brand-primary hover:shadow-md transition-all">
                 <Instagram size={18} />
               </a>
@@ -933,11 +934,11 @@ const ChatWidget = () => {
   ];
 
   return (
-    <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4">
+    <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[100] flex flex-col items-end gap-3 sm:gap-4">
       {/* Artist Mode Toggle (For Demo) */}
       <button 
         onClick={() => setIsArtistMode(!isArtistMode)}
-        className="bg-white/90 backdrop-blur-sm border border-gray-200 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-brand-ink/40 hover:text-brand-primary transition-all shadow-sm hover:shadow-md"
+        className="bg-white/90 backdrop-blur-sm border border-gray-200 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-brand-ink/40 hover:text-brand-primary transition-all shadow-sm hover:shadow-md"
       >
         {isArtistMode ? 'Switch to Client View' : 'Switch to Artist View'}
       </button>
@@ -948,32 +949,34 @@ const ChatWidget = () => {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="w-[380px] h-[600px] bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
+            className="w-[calc(100vw-2rem)] sm:w-[380px] h-[500px] sm:h-[600px] bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="bg-brand-ink p-8 text-white flex items-center justify-between relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="flex items-center gap-4 relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-brand-primary flex items-center justify-center shadow-lg shadow-brand-primary/20">
-                  <Sparkles size={24} className="text-white" />
+            <div className="bg-brand-ink p-5 sm:p-8 text-white flex items-center justify-between relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-brand-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="flex items-center gap-3 sm:gap-4 relative z-10">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-brand-primary flex items-center justify-center shadow-lg shadow-brand-primary/20">
+                  <Sparkles size={18} className="text-white sm:hidden" />
+                  <Sparkles size={20} className="text-white hidden sm:block" />
                 </div>
                 <div>
-                  <div className="font-display font-bold text-lg">
+                  <div className="font-display font-bold text-sm sm:text-lg">
                     {isArtistMode ? 'Artist Dashboard' : 'Titan Studio'}
                   </div>
-                  <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest flex items-center gap-1.5">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <div className="text-[8px] sm:text-[10px] font-bold text-white/40 uppercase tracking-widest flex items-center gap-1 sm:gap-1.5">
+                    <div className="w-1 h-1 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse" />
                     Online & Ready
                   </div>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/40 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
-                <X size={24} />
+              <button onClick={() => setIsOpen(false)} className="text-white/40 hover:text-white transition-colors p-1.5 sm:p-2 hover:bg-white/5 rounded-full">
+                <X size={18} className="sm:hidden" />
+                <X size={20} className="hidden sm:block" />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-grow overflow-y-auto p-6 space-y-6 bg-gray-50/50 scrollbar-hide">
+            <div className="flex-grow overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6 bg-gray-50/50 scrollbar-hide">
               {messages.map((msg, i) => (
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
@@ -981,10 +984,10 @@ const ChatWidget = () => {
                   key={i} 
                   className={`flex flex-col ${msg.sender.includes('Titan') ? 'items-start' : 'items-end'}`}
                 >
-                  <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed ${msg.sender.includes('Titan') ? 'bg-white text-brand-ink shadow-sm rounded-tl-none border border-gray-100' : 'bg-brand-primary text-white shadow-lg shadow-brand-primary/10 rounded-tr-none'}`}>
+                  <div className={`max-w-[90%] sm:max-w-[85%] p-3 sm:p-4 rounded-2xl sm:rounded-3xl text-xs sm:text-sm leading-relaxed ${msg.sender.includes('Titan') ? 'bg-white text-brand-ink shadow-sm rounded-tl-none border border-gray-100' : 'bg-brand-primary text-white shadow-lg shadow-brand-primary/10 rounded-tr-none'}`}>
                     {msg.text}
                   </div>
-                  <span className="text-[9px] font-black text-brand-ink/20 uppercase tracking-widest mt-2 px-2">
+                  <span className="text-[8px] sm:text-[9px] font-black text-brand-ink/20 uppercase tracking-widest mt-1.5 sm:mt-2 px-2">
                     {msg.sender} • {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </motion.div>
@@ -992,14 +995,11 @@ const ChatWidget = () => {
               
               {isTyping && (
                 <div className="flex flex-col items-start">
-                  <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm flex gap-1">
-                    <div className="w-1.5 h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-1.5 h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-1.5 h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div className="bg-white px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl rounded-tl-none border border-gray-100 shadow-sm flex gap-1">
+                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-[9px] font-black text-brand-ink/20 uppercase tracking-widest mt-2 px-2">
-                    {isTyping} is typing...
-                  </span>
                 </div>
               )}
               <div ref={messagesEndRef} />
@@ -1007,12 +1007,12 @@ const ChatWidget = () => {
 
             {/* Quick Replies */}
             {!isArtistMode && messages.length < 3 && (
-              <div className="px-6 py-4 bg-white border-t border-gray-50 flex flex-wrap gap-2">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-white border-t border-gray-50 flex flex-wrap gap-1.5 sm:gap-2">
                 {quickReplies.map((reply) => (
                   <button 
                     key={reply}
                     onClick={() => handleSendMessage(reply)}
-                    className="text-[10px] font-bold text-brand-ink/60 bg-gray-50 hover:bg-brand-primary/10 hover:text-brand-primary border border-gray-100 px-3 py-1.5 rounded-full transition-all"
+                    className="text-[9px] sm:text-[10px] font-bold text-brand-ink/60 bg-gray-50 hover:bg-brand-primary/10 hover:text-brand-primary border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all"
                   >
                     {reply}
                   </button>
@@ -1026,7 +1026,7 @@ const ChatWidget = () => {
                 e.preventDefault();
                 handleSendMessage(inputValue);
               }} 
-              className="p-6 bg-white border-t border-gray-100 flex gap-3 items-center"
+              className="p-4 sm:p-6 bg-white border-t border-gray-100 flex gap-2 sm:gap-3 items-center"
             >
               <div className="flex-grow relative">
                 <input 
@@ -1034,15 +1034,16 @@ const ChatWidget = () => {
                   value={inputValue}
                   onChange={handleInputChange}
                   placeholder="Type your message..."
-                  className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3.5 text-sm focus:outline-none focus:border-brand-primary/50 transition-all placeholder:text-brand-ink/20"
+                  className="w-full bg-gray-50 border border-gray-100 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-2 sm:py-3.5 text-xs sm:text-sm focus:outline-none focus:border-brand-primary/50 transition-all placeholder:text-brand-ink/20"
                 />
               </div>
               <button 
                 type="submit" 
                 disabled={!inputValue.trim()}
-                className="bg-brand-primary text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-brand-primary-hover transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:shadow-none"
+                className="bg-brand-primary text-white w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center hover:bg-brand-primary-hover transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:shadow-none shrink-0"
               >
-                <Send size={20} />
+                <Send size={16} className="sm:hidden" />
+                <Send size={18} className="hidden sm:block" />
               </button>
             </form>
           </motion.div>
@@ -1056,12 +1057,13 @@ const ChatWidget = () => {
             setIsOpen(!isOpen);
             setNotifications(0);
           }}
-          className={`w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-2xl transition-all duration-500 relative group ${notifications > 0 ? 'bg-brand-secondary text-brand-ink scale-110' : 'bg-brand-primary text-white hover:scale-110'}`}
+          className={`w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-[2rem] flex items-center justify-center shadow-2xl transition-all duration-500 relative group ${notifications > 0 ? 'bg-brand-secondary text-brand-ink scale-110' : 'bg-brand-primary text-white hover:scale-110'}`}
         >
-          {isOpen ? <X size={32} /> : <MessageCircle size={32} className="group-hover:rotate-12 transition-transform" />}
+          {isOpen ? <X size={24} className="sm:hidden" /> : <MessageCircle size={24} className="sm:hidden group-hover:rotate-12 transition-transform" />}
+          {isOpen ? <X size={32} className="hidden sm:block" /> : <MessageCircle size={32} className="hidden sm:block group-hover:rotate-12 transition-transform" />}
           
           {notifications > 0 && (
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-brand-ink text-white text-[12px] font-black rounded-full flex items-center justify-center border-4 border-white animate-bounce shadow-lg">
+            <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-brand-ink text-white text-[10px] sm:text-[12px] font-black rounded-full flex items-center justify-center border-2 sm:border-4 border-white animate-bounce shadow-lg">
               {notifications}
             </div>
           )}
@@ -1069,7 +1071,7 @@ const ChatWidget = () => {
         
         {/* Pulse effect when unread */}
         {notifications > 0 && !isOpen && (
-          <div className="absolute inset-0 bg-brand-secondary rounded-[2rem] animate-ping opacity-20 -z-10" />
+          <div className="absolute inset-0 bg-brand-secondary rounded-2xl sm:rounded-[2rem] animate-ping opacity-20 -z-10" />
         )}
       </div>
     </div>
