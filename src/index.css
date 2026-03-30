@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@theme {
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-headline: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Be Vietnam Pro", sans-serif;
+  --font-label: "Plus Jakarta Sans", sans-serif;
+
+  --color-brand-primary: #03a56e;
+  --color-brand-primary-hover: #1dbf73;
+  --color-brand-secondary: #fdc003;
+  --color-brand-surface: #faf9fe;
+  --color-brand-ink: #1a1b1f;
+
+  /* About Page Colors */
+  --color-primary: #006c46;
+  --color-primary-container: #5ddea1;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #005f3d;
+  --color-secondary: #3b674f;
+  --color-secondary-container: #bdeecf;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #416d55;
+  --color-tertiary: #875222;
+  --color-tertiary-container: #ffb87f;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #794718;
+  --color-surface: #f4fbf4;
+  --color-on-surface: #171d19;
+  --color-surface-variant: #dde4dd;
+  --color-on-surface-variant: #3d4a41;
+  --color-outline: #6d7a71;
+  --color-outline-variant: #bccabf;
+  --color-surface-container-low: #eff5ee;
+  --color-surface-container-highest: #dde4dd;
+  --color-surface-container-lowest: #ffffff;
+  --color-primary-fixed-dim: #5cdda0;
+  --color-primary-fixed: #7bfabb;
+  --color-tertiary-fixed: #ffdcc3;
+  --color-on-tertiary-fixed: #2f1500;
+  
+  --radius-xl: 2rem;
+  --radius-2xl: 3rem;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-surface text-brand-ink font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    @apply inline-block align-middle;
+  }
+}
+
+.glass-nav {
+  @apply bg-white/70 backdrop-blur-xl border-b border-white/20 sticky top-0 z-50;
+}
+
+.btn-primary {
+  @apply bg-brand-primary hover:bg-brand-primary-hover text-white px-8 py-4 rounded-full font-display font-bold transition-all duration-300 shadow-lg shadow-brand-primary/20 flex items-center justify-center gap-2;
+}
+
+.btn-secondary {
+  @apply bg-gray-100 hover:bg-gray-200 text-brand-ink px-8 py-4 rounded-full font-display font-bold transition-all duration-300 flex items-center justify-center gap-2;
+}
+
+.card-whimsical {
+  @apply bg-white rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-ink/5 border border-transparent hover:border-brand-primary/10;
+}
+
+.badge-fiverr {
+  @apply bg-brand-secondary/10 text-[#6c5000] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1;
+}
