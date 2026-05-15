@@ -3,1094 +3,899 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Star, 
-  ArrowRight, 
-  CheckCircle2, 
-  Clock, 
-  Palette, 
-  Workflow, 
-  Award, 
-  ChevronDown, 
-  Instagram, 
-  Linkedin, 
-  Share2,
-  Mail,
-  ExternalLink,
-  Menu,
-  X,
-  MessageCircle,
-  Send,
-  Bell,
-  User,
-  Sparkles
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { io } from 'socket.io-client';
 
-// Initialize socket
-const socket = io();
+// ─── Types ──────────────────────────────────────────────────────────────────
+type Section = 0 | 1 | 2 | 3 | 4 | 5;
 
-// --- Components ---
+// ─── Shared primitives ───────────────────────────────────────────────────────
 
-const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const Label = ({ children, color = 'text-blue-600' }: { children: React.ReactNode; color?: string }) => (
+  <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${color}`}>{children}</p>
+);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Home', href: '#' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Services', href: '#services' },
-    { name: 'About', href: '#about' },
-  ];
-
+const StrengthBar = ({ pct, color }: { pct: number; color: 'green' | 'red' | 'yellow' }) => {
+  const fill = { green: 'bg-green-500', red: 'bg-red-400', yellow: 'bg-yellow-400' }[color];
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass-nav py-3 shadow-sm' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-primary">Titan</span>
-          <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-ink">Studio</span>
-        </div>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className="text-sm font-semibold text-brand-ink/70 hover:text-brand-primary transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
-        </div>
-
-        <div className="hidden md:block">
-          <button className="bg-brand-primary text-white px-6 py-2.5 rounded-full font-display font-bold text-sm hover:bg-brand-primary-hover transition-all shadow-md shadow-brand-primary/20">
-            Hire Me
-          </button>
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button className="md:hidden text-brand-ink" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-white shadow-xl p-6 md:hidden flex flex-col gap-4"
-          >
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                className="text-lg font-semibold text-brand-ink"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <button className="btn-primary w-full mt-2">Hire Me</button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+    <div className="h-2 bg-gray-100 rounded-full mt-3 overflow-hidden">
+      <motion.div
+        className={`h-full rounded-full ${fill}`}
+        initial={{ width: 0 }}
+        animate={{ width: `${pct}%` }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      />
+    </div>
   );
 };
 
-const Hero = () => {
-  return (
-    <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center lg:text-left"
-        >
-          <div className="inline-flex items-center gap-2 bg-brand-secondary/10 text-[#6c5000] px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-widest mb-6">
-            <Star size={12} className="sm:w-3.5 sm:h-3.5" fill="currentColor" />
-            TOP RATED PLUS SELLER ON FIVERR
-          </div>
-          
-          <h1 className="text-3xl sm:text-6xl md:text-7xl font-display font-extrabold leading-[1.1] mb-6 sm:mb-8">
-            Bringing <span className="text-brand-primary">Magic</span> to Every Page.
-          </h1>
-          
-          <p className="text-base sm:text-xl text-brand-ink/60 leading-relaxed mb-8 sm:mb-10 max-w-lg mx-auto lg:mx-0">
-            Custom high-energy illustrations for children's books, character design, and whimsical worlds. Let's tell your story together.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-12 justify-center lg:justify-start">
-            <button className="btn-primary w-full sm:w-auto">Request Quote</button>
-            <button className="btn-secondary w-full sm:w-auto">View Portfolio</button>
-          </div>
-          
-          <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-8 opacity-40 grayscale overflow-hidden">
-            <span className="text-[10px] font-bold uppercase tracking-widest shrink-0">AS SEEN ON</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Fiverr_Logo_09.2020.svg/1200px-Fiverr_Logo_09.2020.svg.png" alt="Fiverr" className="h-4 sm:h-5" referrerPolicy="no-referrer" />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Upwork_logo.svg/1200px-Upwork_logo.svg.png" alt="Upwork" className="h-4 sm:h-5" referrerPolicy="no-referrer" />
-          </div>
-        </motion.div>
+const RevealBtn = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  <button
+    onClick={onClick}
+    className="w-full mt-4 py-3 px-6 border-2 border-dashed border-gray-300 rounded-xl text-sm font-semibold text-gray-500 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all"
+  >
+    {label}
+  </button>
+);
 
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative grid grid-cols-2 gap-3 sm:gap-4"
-        >
-          <div className="space-y-3 sm:space-y-4 pt-8 sm:pt-12">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-square shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
-              <img src="https://picsum.photos/seed/fox/600/600" alt="Fox Illustration" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </div>
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-              <img src="https://picsum.photos/seed/room/600/750" alt="Cozy Room" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </div>
-          </div>
-          <div className="space-y-3 sm:space-y-4">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-              <img src="https://picsum.photos/seed/dragon/600/450" alt="Dragon Illustration" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </div>
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden aspect-square shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-500">
-              <img src="https://picsum.photos/seed/party/600/600" alt="Animal Party" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </div>
-          </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-primary/5 rounded-full blur-3xl" />
-        </motion.div>
-      </div>
-    </section>
+const NavButtons = ({
+  onPrev,
+  onNext,
+  prevLabel = '← Kembali',
+  nextLabel = 'Lanjut →',
+  hidePrev = false,
+}: {
+  onPrev?: () => void;
+  onNext?: () => void;
+  prevLabel?: string;
+  nextLabel?: string;
+  hidePrev?: boolean;
+}) => (
+  <div className="flex gap-3 mt-10 pt-6 border-t border-gray-100">
+    {!hidePrev && onPrev && (
+      <button
+        onClick={onPrev}
+        className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-all"
+      >
+        {prevLabel}
+      </button>
+    )}
+    {onNext && (
+      <button
+        onClick={onNext}
+        className="px-6 py-3 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-all ml-auto"
+      >
+        {nextLabel}
+      </button>
+    )}
+  </div>
+);
+
+const HypothesisCard = ({
+  title,
+  color,
+  body,
+  note,
+  pct,
+  barColor,
+  strength,
+  strengthColor,
+}: {
+  title: string;
+  color: string;
+  body: string;
+  note: string;
+  pct: number;
+  barColor: 'green' | 'red' | 'yellow';
+  strength: string;
+  strengthColor: string;
+}) => (
+  <div className={`bg-white border border-gray-100 rounded-2xl p-6 border-t-4 ${color}`}>
+    <Label color={color.replace('border-', 'text-')}>{title}</Label>
+    <p className="text-sm text-gray-600 leading-relaxed mb-3">{body}</p>
+    <p className="text-sm text-gray-500 leading-relaxed">
+      <span className="font-semibold text-gray-700">Pertanyaan:</span> {note}
+    </p>
+    <StrengthBar pct={pct} color={barColor} />
+    <p className={`text-xs font-bold mt-2 ${strengthColor}`}>{strength}</p>
+  </div>
+);
+
+const InsightBox = ({ children, color = 'blue' }: { children: React.ReactNode; color?: 'blue' | 'amber' | 'red' | 'green' | 'dark' }) => {
+  const styles = {
+    blue: 'bg-blue-50 border-blue-100 text-blue-900',
+    amber: 'bg-amber-50 border-amber-100 text-amber-900',
+    red: 'bg-red-50 border-red-100 text-red-900',
+    green: 'bg-green-50 border-green-100 text-green-900',
+    dark: 'bg-gray-900 border-gray-900 text-white',
+  }[color];
+  return (
+    <div className={`border rounded-2xl p-5 mt-5 ${styles}`}>
+      {children}
+    </div>
   );
 };
 
-const Services = () => {
-  const [activeTab, setActiveTab] = useState('fiverr');
+// ─── Section 0: Intro ────────────────────────────────────────────────────────
+const SectionIntro = ({ onNext }: { onNext: () => void }) => (
+  <div>
+    <Label>Demo Interaktif · Fahrezi Institute</Label>
+    <h1 className="text-3xl font-bold text-gray-900 leading-tight mb-5">
+      DNA Mirip Karena Nenek Moyang yang Sama, atau Karena "Sistem yang Sama"?
+    </h1>
+    <p className="text-lg text-gray-600 leading-relaxed mb-4">
+      Seseorang mengklaim bahwa kemiripan DNA antar spesies itu bukan karena evolusi, melainkan karena sang pencipta memberikan <strong>"sistem yang sama"</strong> kepada semua makhluk.
+    </p>
+    <p className="text-base text-gray-500 leading-relaxed mb-8">
+      Apakah klaim ini kuat? Di sini kita akan menguji dua hipotesis tersebut menggunakan data genomik — bukan dengan narasi, tapi dengan bukti.
+    </p>
 
-  const services = [
-    {
-      title: 'Character Design',
-      desc: 'Unique, expressive characters tailored to your book\'s personality. Includes 3 expression sketches.',
-      price: '$45',
-      unit: '/ character',
-      btnText: 'Book on Fiverr',
-      icon: <Palette className="text-brand-primary" size={24} />,
-      popular: false
-    },
-    {
-      title: 'Full Book Package',
-      desc: 'Complete storytelling from cover to back. Includes layout, text placement, and print-ready files.',
-      price: '$5',
-      unit: '/ page',
-      btnText: 'Get a Quote',
-      icon: <Workflow className="text-brand-primary" size={24} />,
-      popular: true
-    },
-    {
-      title: 'Background Art',
-      desc: 'Immersive environments that set the perfect mood. High-resolution detailed scenery for covers or spreads.',
-      price: '$75',
-      unit: '/ scene',
-      btnText: 'Learn More',
-      icon: <Share2 className="text-brand-primary" size={24} />,
-      popular: false
-    }
-  ];
-
-  return (
-    <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-6 sm:gap-8 text-center md:text-left">
-          <div>
-            <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-3 sm:mb-4">Creative Services</h2>
-            <p className="text-sm sm:text-lg text-brand-ink/60 max-w-md mx-auto md:mx-0">
-              Simple, transparent pricing for every stage of your storytelling journey.
-            </p>
-          </div>
-          
-          <div className="bg-white p-1 rounded-full shadow-sm inline-flex border border-gray-100 self-center md:self-auto">
-            <button 
-              onClick={() => setActiveTab('fiverr')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${activeTab === 'fiverr' ? 'bg-brand-ink text-white shadow-md' : 'text-brand-ink/50 hover:text-brand-ink'}`}
-            >
-              Fiverr Bookings
-            </button>
-            <button 
-              onClick={() => setActiveTab('direct')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${activeTab === 'direct' ? 'bg-brand-ink text-white shadow-md' : 'text-brand-ink/50 hover:text-brand-ink'}`}
-            >
-              Direct Hire
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service, idx) => (
-            <motion.div 
-              key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className={`relative card-whimsical flex flex-col ${service.popular ? 'ring-2 ring-brand-primary' : ''}`}
-            >
-              {service.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-ink text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full">
-                  Most Popular
-                </div>
-              )}
-              
-              <div className="bg-brand-primary/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
-                {service.icon}
-              </div>
-              
-              <h3 className="text-2xl font-display font-bold mb-4">{service.title}</h3>
-              <p className="text-brand-ink/60 mb-8 flex-grow leading-relaxed">
-                {service.desc}
-              </p>
-              
-              <div className="mb-8">
-                <span className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest block mb-1">STARTING AT</span>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-display font-extrabold text-brand-primary">{service.price}</span>
-                  <span className="text-brand-ink/40 font-bold">{service.unit}</span>
-                </div>
-              </div>
-              
-              <button className={`w-full py-4 rounded-xl font-display font-bold transition-all ${service.popular ? 'bg-brand-primary text-white hover:bg-brand-primary-hover shadow-lg shadow-brand-primary/20' : 'bg-gray-100 text-brand-ink hover:bg-gray-200'}`}>
-                {service.btnText}
-              </button>
-            </motion.div>
-          ))}
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-5 border-l-4 border-l-purple-500">
+        <Label color="text-purple-600">Hipotesis 1</Label>
+        <h3 className="font-bold text-gray-900 mb-2">Sistem yang Sama</h3>
+        <p className="text-sm text-gray-500">Kemiripan DNA terjadi karena pencipta menggunakan rancangan yang sama untuk semua makhluk.</p>
       </div>
-    </section>
-  );
-};
+      <div className="bg-white border border-gray-100 rounded-2xl p-5 border-l-4 border-l-blue-600">
+        <Label color="text-blue-600">Hipotesis 2</Label>
+        <h3 className="font-bold text-gray-900 mb-2">Common Ancestry</h3>
+        <p className="text-sm text-gray-500">Kemiripan DNA terjadi karena spesies-spesies tersebut berasal dari nenek moyang bersama.</p>
+      </div>
+    </div>
 
-const Stats = () => {
-  const stats = [
-    { label: 'Projects Delivered', value: '1,500+', icon: <CheckCircle2 className="text-brand-primary" size={20} /> },
-    { label: 'Global Rating', value: '5.0 Star', icon: <Star className="text-brand-secondary" size={20} fill="currentColor" /> },
-    { label: 'Official Fiverr Plus', value: 'Top Rated', icon: <Award className="text-brand-primary" size={20} /> },
-  ];
+    <InsightBox color="blue">
+      <p className="text-sm font-semibold leading-relaxed">
+        Yang akan kita lihat bukan mana yang "lebih mungkin" — tapi mana yang{' '}
+        <em>paling kuat menanggung seluruh data</em> yang ada.
+      </p>
+    </InsightBox>
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 sm:-mt-12 relative z-10">
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl shadow-brand-ink/5 p-5 sm:p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 border border-gray-100">
-        {stats.map((stat, idx) => (
-          <div key={stat.label} className={`flex items-center justify-center gap-3 sm:gap-4 ${idx !== stats.length - 1 ? 'md:border-r border-gray-100' : ''}`}>
-            <div className="bg-gray-50 p-2.5 sm:p-3 rounded-full shrink-0">
-              {stat.icon}
-            </div>
-            <div className="text-center md:text-left">
-              <div className="text-lg sm:text-2xl font-display font-extrabold text-brand-ink">{stat.value}</div>
-              <div className="text-[9px] sm:text-xs font-bold text-brand-ink/40 uppercase tracking-widest">{stat.label}</div>
+    <div className="mt-8">
+      <Label color="text-gray-400">Yang akan kita bahas</Label>
+      <div className="flex flex-col gap-3">
+        {[
+          { icon: '📝', title: 'Analogi Ujian', sub: 'Kapan kemiripan mulai bermakna?' },
+          { icon: '🧬', title: 'Pseudogen GULO', sub: 'Gen yang rusak, di tempat yang sama' },
+          { icon: '🦠', title: 'Endogenous Retrovirus (ERV)', sub: 'Bekas virus lama yang nyangkut di lokasi identik' },
+          { icon: '🔬', title: 'Kromosom 2 Manusia', sub: 'Bekas penyatuan dua kromosom' },
+        ].map((item) => (
+          <div key={item.title} className="flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl">
+            <span className="text-2xl">{item.icon}</span>
+            <div>
+              <span className="font-semibold text-gray-800">{item.title}</span>
+              <span className="text-gray-400 text-sm ml-2">— {item.sub}</span>
             </div>
           </div>
         ))}
       </div>
     </div>
-  );
-};
 
-const Gallery = () => {
-  const [filter, setFilter] = useState('All');
-  const categories = ['All', 'Characters', 'Backgrounds', 'Book Covers', 'Sketches'];
+    <NavButtons hidePrev onNext={onNext} nextLabel="Mulai Demo →" />
+  </div>
+);
 
-  const items = [
-    { title: 'The Garden Secret', category: 'Backgrounds', price: '$85', img: 'https://picsum.photos/seed/garden/800/1000', desc: 'Full character and environment suite for an upcoming floral-themed picture book.' },
-    { title: 'Space Scout Oliver', category: 'Characters', price: '$120', img: 'https://picsum.photos/seed/scout/800/1000', desc: 'Cover design and key conceptual art for a middle-grade space adventure series.' },
-    { title: 'Expressive Souls', category: 'Sketches', price: '$45', img: 'https://picsum.photos/seed/elephant/800/1000', desc: 'High-energy character studies focusing on unique facial expressions and movement.' },
+// ─── Section 1: Analogi Ujian ────────────────────────────────────────────────
+const SectionAnalogi = ({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) => {
+  const [step, setStep] = useState(0);
+
+  const probData = [
+    { label: 'Jawaban benar mirip', sumber: 72, nenek: 28 },
+    { label: '+ Kesalahan yang sama', sumber: 45, nenek: 55 },
+    { label: '+ Kalimat janggal yang sama', sumber: 22, nenek: 78 },
+    { label: '+ Poin dilewati & pengganti sama', sumber: 8, nenek: 92 },
   ];
 
   return (
-    <section id="portfolio" className="py-16 sm:py-24 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10 sm:mb-16">
-          <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-6 sm:mb-8">World Building Gallery</h2>
-          
-          <div className="flex overflow-x-auto sm:flex-wrap justify-start sm:justify-center gap-2 sm:gap-3 pb-4 sm:pb-0 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-            {categories.map((cat) => (
-              <button 
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${filter === cat ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' : 'bg-gray-100 text-brand-ink/60 hover:bg-gray-200'}`}
-              >
-                {cat}
-              </button>
+    <div>
+      <Label>Bagian 1 dari 5</Label>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Analogi Ujian: Kapan Kemiripan Mulai Bermakna?</h2>
+
+      <p className="text-gray-600 leading-relaxed mb-5">
+        Guru memeriksa jawaban dua siswa, A dan B. Mari kita ikuti apa yang ia temukan — langkah demi langkah.
+      </p>
+
+      {/* Step 1: Jawaban mirip */}
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden mb-4">
+        <div className="px-5 pt-5 pb-3">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Temuan pertama — Jawaban benar mirip</p>
+          <div className="grid grid-cols-2 gap-3">
+            {['A', 'B'].map((s) => (
+              <div key={s} className="bg-gray-50 rounded-xl p-4">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Siswa {s}</p>
+                {[
+                  'MBG = program makan bergizi gratis untuk anak sekolah',
+                  'Tujuan: membantu pemenuhan gizi, meningkatkan kesehatan',
+                  'Manfaat: mendukung konsentrasi belajar',
+                ].map((t, i) => (
+                  <div key={i} className="text-xs text-gray-600 bg-white rounded-lg p-2.5 mb-2 last:mb-0 border border-gray-100">
+                    {t}
+                  </div>
+                ))}
+              </div>
             ))}
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {items.map((item, idx) => (
-            <motion.div 
-              key={item.title}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="group"
-            >
-              <div className="relative rounded-3xl overflow-hidden aspect-[4/5] mb-6 shadow-xl">
-                <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
-                <div className="absolute bottom-6 right-6">
-                  <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg flex flex-col items-end">
-                    <span className="text-[10px] font-black text-brand-ink/40 uppercase tracking-widest">STARTS AT</span>
-                    <span className="text-xl font-display font-extrabold text-brand-ink">{item.price}</span>
-                  </div>
-                </div>
-              </div>
-              <h3 className="text-2xl font-display font-bold mb-2 group-hover:text-brand-primary transition-colors">{item.title}</h3>
-              <p className="text-brand-ink/60 leading-relaxed text-sm">
-                {item.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Features = () => {
-  const features = [
-    { title: 'On-Time Delivery', desc: 'Maintaining a consistent 100% on-time record across 1,500+ orders.', icon: <Clock size={20} /> },
-    { title: 'Unique Style', desc: 'Hand-painted feel with professional digital precision and vibrant palettes.', icon: <Palette size={20} /> },
-    { title: 'Smooth Workflow', desc: 'Clear communication from the first sketch to the final delivery.', icon: <Workflow size={20} /> },
-    { title: 'Pro Standards', desc: 'Print-ready CMYK files at 300DPI, perfectly prepared for publishing.', icon: <Award size={20} /> },
-  ];
-
-  return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6 bg-brand-primary/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-20 items-center">
-        <div className="text-center lg:text-left">
-          <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-8 sm:mb-12 leading-tight">
-            Why Work with <span className="text-brand-primary italic">Titan Studio?</span>
-          </h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-6 sm:gap-y-10 mb-10 sm:mb-12 text-left">
-            {features.map((f) => (
-              <div key={f.title} className="space-y-2 sm:space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="bg-brand-primary/10 text-brand-primary p-2 rounded-lg shrink-0">
-                    {f.icon}
-                  </div>
-                  <h4 className="font-display font-bold text-base sm:text-lg">{f.title}</h4>
-                </div>
-                <p className="text-xs sm:text-sm text-brand-ink/60 leading-relaxed">
-                  {f.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-          
-          <button className="btn-primary w-full sm:w-auto">
-            Visit my Fiverr Profile <ExternalLink size={18} />
-          </button>
-        </div>
-
-        <div className="relative mt-8 lg:mt-0">
-          <div className="rounded-2xl sm:rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/3]">
-            <img src="https://picsum.photos/seed/drawing/800/600" alt="Artist Drawing" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-          </div>
-          
-          <div className="absolute -bottom-6 -left-4 sm:-bottom-8 sm:-left-8 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl flex items-center gap-3 sm:gap-4 border border-gray-100">
-            <div className="bg-brand-secondary/10 text-brand-secondary p-2 sm:p-3 rounded-full">
-              <Star size={20} className="sm:w-6 sm:h-6" fill="currentColor" />
-            </div>
-            <div>
-              <div className="text-xl sm:text-2xl font-display font-extrabold">5.0 Star</div>
-              <div className="text-[10px] font-bold text-brand-ink/40 uppercase tracking-widest">Verified Rating</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Testimonials = () => {
-  const reviews = [
-    {
-      name: 'John D.',
-      role: 'Fiverr Author',
-      text: 'Exceeded all expectations. The level of detail and character expression is world-class. My kids\' book is finally coming to life!',
-      stars: 5,
-      initials: 'JD'
-    },
-    {
-      name: 'Maria L.',
-      role: 'Publisher',
-      text: 'Incredible talent. Very communicative and open to feedback. The final assets were delivered ahead of schedule and were perfect.',
-      stars: 5,
-      initials: 'ML'
-    },
-    {
-      name: 'Robert K.',
-      role: 'Indie Author',
-      text: 'A absolute pleasure to work with. Titan Studio took my rough ideas and turned them into something magical. Highly recommend!',
-      stars: 5,
-      initials: 'RK'
-    }
-  ];
-
-  return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10 sm:mb-16">
-          <div className="inline-block bg-brand-primary/10 text-brand-primary px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4">
-            Loved by Authors Worldwide
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-display font-extrabold mb-4">Wall of Love</h2>
-          <p className="text-sm sm:text-lg text-brand-ink/60 max-w-2xl mx-auto">
-            Real stories from real clients who transformed their vision into reality at Titan Studio.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {reviews.map((review, idx) => (
-            <motion.div 
-              key={review.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="card-whimsical"
-            >
-              <div className="flex gap-1 mb-6">
-                {[...Array(review.stars)].map((_, i) => (
-                  <Star key={i} size={16} fill="#fdc003" className="text-brand-secondary" />
-                ))}
-              </div>
-              
-              <p className="text-lg font-medium leading-relaxed mb-8 italic text-brand-ink/80">
-                "{review.text}"
-              </p>
-              
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold">
-                  {review.initials}
-                </div>
-                <div>
-                  <div className="font-display font-bold">{review.name}</div>
-                  <div className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">{review.role}</div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const About = () => {
-  return (
-    <div id="about" className="overflow-hidden">
-      {/* Hero Section: The Artist's Canvas */}
-      <section className="relative px-4 sm:px-8 py-12 sm:py-20 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex-1 space-y-6 sm:space-y-8 z-10 text-center lg:text-left"
-        >
-          <div className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-widest uppercase">
-            <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-            Top Rated Seller
-          </div>
-          <h2 className="font-headline text-3xl sm:text-5xl md:text-7xl font-extrabold text-on-surface tracking-tighter leading-[1.1]">
-            Every sketch tells a <span className="text-primary italic">story.</span>
-          </h2>
-          <p className="text-sm sm:text-lg text-on-surface-variant leading-relaxed max-w-xl mx-auto lg:mx-0">
-            I'm Titan, a visual storyteller dedicated to bringing the magic of childhood wonder to life. For over a decade, I've been turning whispers of imagination into vibrant, tactile realities for authors around the globe.
-          </p>
-        </motion.div>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="flex-1 relative w-full max-w-lg lg:max-w-none"
-        >
-          <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-            <img 
-              alt="Artist at work" 
-              className="w-full h-[350px] sm:h-[500px] object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_kp0NbjwQQvVzZ1Lm_gvJJK8JL5dciR4lVUPovINrRNVj8_UL2FqBax0PkFRyi3qjycT62bVu2xQdi3Z77qyCTrFtq5Jrs-9Cy4O8IsPyGPmtLxphWwggjdB6L45p8HYknhZu1mZbrxDEUOghifQqiNiUF-CZDqAE45xQAoZaQ97IFhnjD1ctjfXQVrIbJzZStQGuT1JSkFrWlzXoPtPans_4_ItiQCREvsf6qTSWDbX8O2BnmPCkNcjo5zNZDY_viihFIzj615Y"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary-fixed-dim/30 rounded-full blur-3xl -z-10"></div>
-          <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-tertiary-container/30 rounded-full blur-3xl -z-10"></div>
-        </motion.div>
-      </section>
-
-      {/* Journey Section: Bento Grid */}
-      <section className="bg-surface-container-low py-16 sm:py-24 px-6 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-12 sm:mb-16 text-center">My Journey as a Creator</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {/* Bento Item 1 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="md:col-span-2 bg-surface-container-lowest p-6 sm:p-10 rounded-xl flex flex-col justify-between group hover:shadow-lg transition-shadow"
-            >
-              <div className="space-y-4">
-                <span className="material-symbols-outlined text-primary text-3xl sm:text-4xl">auto_stories</span>
-                <h3 className="font-headline text-xl sm:text-2xl font-bold">The Fiverr Evolution</h3>
-                <p className="text-sm sm:text-base text-on-surface-variant leading-relaxed">Starting as a hobbyist, I found my tribe on Fiverr. Today, as a Top-Rated Seller, I've collaborated with over 500 authors, helping them self-publish dreams that sit on bedside tables across six continents.</p>
-              </div>
-              <div className="mt-8 flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                <img className="h-20 sm:h-24 w-28 sm:w-32 object-cover rounded-lg shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKM1zHBeGx9PAPqpzMl8bHQkUqcwRomsSnAJq0HgPKttMG-CUmDKCZV7Xo-pNEUWj8-KukcqI8EbpvDZVWPpyRWeyeJQMMiwuxp6g9yn6jq8qyl1ykoDq7u5tp9vF8mdv6o-4SSLbO8_MwabjaBlL87iVXP9CYqF1hU8XWbSTUWd_epRPX-tg2yC_mOzUrP09JXqqWZnS6M8eqyR537xLXQIJAwA7AiePuoPAjVgPTok0pDF6AifHLXmxRgGE1SaAzKljGJorkSHw" referrerPolicy="no-referrer" />
-                <img className="h-20 sm:h-24 w-28 sm:w-32 object-cover rounded-lg shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD__RK6_DKSidxTnciyxzTRcHlU3Gy76L2tFRGNIKtGTffc2229gqjDpolZ-77VULT0ciAoaACOHe-N9tFBxeL7UNWmBPTbkKaU5n9aqtjvD882RU_PvZfzyiHrTOscRm8zEn1cfVLXJp2gDqRe-lmfGqHLi7C0t9i0EJwRjE5LdaT3TiBNwEw-ZZj4-FoBhMDrGaIzSXOb12bbD33ZCpUEcfCCAKZk8tACAg27tfMuG8_KVerwwDdJo18AjnErQPqCYw5P5qIM9Zs" referrerPolicy="no-referrer" />
-                <img className="h-20 sm:h-24 w-28 sm:w-32 object-cover rounded-lg shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHcq81QVulU_PJtpxp2f44IVzAm3ecBXncEiUeApKJxY-iwLi2wcefPFG4f1cx9foFLoAB5PIZHx86Ahb415_Zd0IYpPu6Im-Dqpv1dOenQaPjWP9Ey3848KiwwlJI82DL9nTzP2Ki7YAcA97WPOPTbpD4OWeAfUnBivA-hc6hB3lwFHxYgTwD2wgKtZpXLTCTgr_Vr7XzX8RLAdTAzxZWlyCtcKN1W5p2iO0oeqHihWab9Q3aEE1x84prGDUdfk6HVDS3gM2WTaY" referrerPolicy="no-referrer" />
-              </div>
-            </motion.div>
-            {/* Bento Item 2 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-primary text-on-primary p-8 sm:p-10 rounded-xl flex flex-col justify-center items-center text-center space-y-4 sm:space-y-6"
-            >
-              <div className="text-5xl sm:text-6xl font-black">500+</div>
-              <p className="font-label font-bold uppercase tracking-widest text-primary-fixed text-xs sm:text-sm">Stories Illustrated</p>
-              <div className="w-12 sm:w-16 h-1 bg-primary-container rounded-full"></div>
-              <p className="text-xs sm:text-sm opacity-90">Building worlds for the next generation of dreamers, one brushstroke at a time.</p>
-            </motion.div>
-            {/* Bento Item 3 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-tertiary-container text-on-tertiary-container p-8 sm:p-10 rounded-xl space-y-4"
-            >
-              <span className="material-symbols-outlined text-tertiary text-3xl sm:text-4xl">palette</span>
-              <h3 className="font-headline text-xl sm:text-2xl font-bold">The Technique</h3>
-              <p className="text-xs sm:text-sm leading-relaxed">I blend traditional watercolor textures with digital precision. This creates a "warm" feel that digital-only art often misses, perfect for the tactile nature of children's books.</p>
-            </motion.div>
-            {/* Bento Item 4 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="md:col-span-2 bg-surface-container-highest p-6 sm:p-10 rounded-xl flex items-center gap-6 sm:gap-8"
-            >
-              <div className="hidden xs:block shrink-0">
-                <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full border-4 border-white overflow-hidden shadow-md">
-                  <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjwql2Dh9FaAUYMT5OnUP9FIEvXfHknJa5RkvFmKmHncmoIypz7lfFPJz6kmGkJfpjHIlUcYR5P-PB4n4pxWiP8FvGZyIsktVJ6w6Qzva7gLRkNg0ySzLuH1j30-8nihZybkRONyMtrWKJhNWIpCVqSCO0dU3bkMSWEnK_JtRnirblZc0tOih4ULmYUyFWZj-7QfnFPIZiliWXPJxTHpHB3FD0yBytMUm6Pz1G0DDQ5OMz8pJu51rdhPFtmF6VQlaVEySihLAspus" referrerPolicy="no-referrer" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h3 className="font-headline text-base sm:text-xl font-bold italic leading-snug">"Storytelling isn't just about the words; it's about the feeling a child gets when they turn the page."</h3>
-                <p className="text-xs sm:text-sm font-semibold">— Titan, Lead Artist</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Story-Spacer Squiggle */}
-      <div className="flex justify-center py-12 bg-surface">
-        <svg fill="none" height="40" viewBox="0 0 200 40" width="200" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 20C20 20 30 10 50 10C70 10 80 30 100 30C120 30 130 10 150 10C170 10 180 20 200 20" stroke="#6efdaa" strokeLinecap="round" strokeWidth="6"></path>
-        </svg>
-      </div>
-
-      {/* Wall of Love: Testimonials */}
-    <section className="py-16 sm:py-24 px-6 sm:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-6">
-          <div className="max-w-xl">
-            <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-4">Wall of Love</h2>
-            <p className="text-sm sm:text-base text-on-surface-variant">Real words from authors who trusted Titan Studio with their precious stories.</p>
-          </div>
-          <button className="bg-surface-container-high text-on-surface px-6 sm:px-8 py-3 rounded-full font-label font-bold text-sm flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
-            View Fiverr Profile
-            <span className="material-symbols-outlined text-lg">arrow_outward</span>
-          </button>
-        </div>
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-          {[
-            { name: "Sarah Jenkins", role: "Author of 'The Moon's Secret'", text: "Titan took my simple manuscript and turned it into a visual masterpiece. My children literally gasp at the colors on every page. Truly a top-rated experience!", initials: "SH", color: "bg-secondary-container text-on-secondary-container" },
-            { name: "Robert Miller", role: "Self-Published Author", text: "The communication was flawless. Titan understands children's psychology and how they interact with art. Our book is now a bestseller in its category!", initials: "RM", color: "bg-primary-container text-on-primary-container" },
-            { name: "Elena Lopez", role: "Storyteller", text: "Absolutely stunning work. The character design is so unique. Titan didn't just draw my characters; they gave them souls.", initials: "EL", color: "bg-tertiary-container text-on-tertiary-container" },
-            { name: "David Kim", role: "Independent Publisher", text: "Fast, professional, and incredibly talented. Titan Studio is my go-to for all my illustration needs.", initials: "DK", color: "bg-secondary-fixed text-on-secondary-fixed" }
-          ].map((t, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="break-inside-avoid bg-surface-container-lowest p-8 rounded-lg shadow-sm border border-outline-variant/10"
-            >
-              <div className="flex gap-1 mb-4 text-tertiary">
-                {[...Array(5)].map((_, j) => (
-                  <span key={j} className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                ))}
-              </div>
-              <p className="text-on-surface mb-6 italic leading-relaxed">"{t.text}"</p>
-              <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${t.color}`}>{t.initials}</div>
-                <div>
-                  <p className="text-sm font-bold">{t.name}</p>
-                  <p className="text-xs text-on-surface-variant">{t.role}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative py-16 sm:py-24 px-6 sm:px-8 overflow-hidden">
-        <div className="max-w-4xl mx-auto bg-primary rounded-2xl sm:rounded-xl p-8 sm:p-12 text-center text-on-primary relative z-10">
-          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-6">Ready to start your story?</h2>
-          <p className="text-base sm:text-lg mb-8 sm:text-10 opacity-90">Let's collaborate to create something magical that children will cherish forever.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="bg-on-primary text-primary px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-label font-bold text-base sm:text-lg hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-xl">
-              Hire Titan on Fiverr
-            </button>
-            <button className="bg-transparent border-2 border-on-primary/30 text-on-primary px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-label font-bold text-base sm:text-lg hover:bg-white/10 transition-colors">
-              View Portfolio
-            </button>
-          </div>
-        </div>
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-secondary-container/20 rounded-full blur-3xl -translate-y-1/2"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-tertiary-container/20 rounded-full blur-3xl -translate-y-1/2"></div>
-      </section>
-    </div>
-  );
-};
-
-const Contact = () => {
-  return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto bg-brand-ink rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 md:p-20 text-white overflow-hidden relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 relative z-10">
-          <div className="text-center lg:text-left">
-            <h2 className="text-3xl sm:text-6xl font-display font-extrabold mb-4 sm:mb-8 leading-tight">
-              Let's Build Your World.
-            </h2>
-            <p className="text-sm sm:text-xl text-white/60 mb-8 sm:mb-12 leading-relaxed max-w-md mx-auto lg:mx-0">
-              Have a large-scale project or need a unique visual identity? I offer custom packages for publishers and commercial brands.
+        <div className="px-5 pb-5">
+          <InsightBox color="amber">
+            <p className="text-sm">
+              <strong>Guru belum curiga.</strong> Mereka belajar dari kisi-kisi yang sama — jawaban mirip itu wajar. Kemiripan ini masih bisa dijelaskan oleh <em>"sistem belajar yang sama."</em>
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <button className="bg-white text-brand-ink px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-display font-bold hover:bg-gray-100 transition-all text-sm sm:text-base w-full sm:w-auto">
-                Get a Custom Quote
-              </button>
-              <button className="bg-white/10 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-display font-bold hover:bg-white/20 transition-all border border-white/10 text-sm sm:text-base w-full sm:w-auto">
-                Schedule a Consultation
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/10 mt-6 lg:mt-0">
-            <form className="space-y-6">
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">NAME</label>
-                <input 
-                  type="text" 
-                  placeholder="Enter your name"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-primary/50 transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">PROJECT TYPE</label>
-                <div className="relative">
-                  <select className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white appearance-none focus:outline-none focus:border-brand-primary/50 transition-colors">
-                    <option className="bg-brand-ink">Children's Book Series</option>
-                    <option className="bg-brand-ink">Character Design</option>
-                    <option className="bg-brand-ink">Commercial Illustration</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40" size={18} />
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">MESSAGE</label>
-                <textarea 
-                  rows={4}
-                  placeholder="Tell me about your vision..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-primary/50 transition-colors resize-none"
-                />
-              </div>
-              <button className="w-full bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-full font-display font-bold transition-all shadow-lg shadow-brand-primary/20">
-                Send Inquiry
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Background blobs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-secondary/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
-      </div>
-    </section>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer className="bg-gray-100 pt-16 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-16 sm:mb-20">
-          <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-2">
-              <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-primary">Titan</span>
-              <span className="text-xl sm:text-2xl font-display font-extrabold text-brand-ink">Studio</span>
-            </div>
-            <p className="text-brand-ink/50 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
-              Bringing magic to every page through vibrant illustrations and immersive character designs.
-            </p>
-            <div className="flex justify-center sm:justify-start gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-ink/40 hover:text-brand-primary hover:shadow-md transition-all">
-                <Instagram size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-ink/40 hover:text-brand-primary hover:shadow-md transition-all">
-                <Share2 size={18} />
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold mb-6">QUICK LINKS</h4>
-            <ul className="space-y-4 text-sm font-medium text-brand-ink/50">
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Fiverr Profile</a></li>
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Portfolio</a></li>
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Service Packages</a></li>
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Process Guide</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold mb-6">SUPPORT</h4>
-            <ul className="space-y-4 text-sm font-medium text-brand-ink/50">
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Contact Me</a></li>
-              <li><a href="#" className="hover:text-brand-primary transition-colors">FAQ</a></li>
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-brand-primary transition-colors">Privacy Policy</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold mb-6">PAYMENT</h4>
-            <div className="flex gap-3">
-              <div className="bg-white px-3 py-2 rounded-lg shadow-sm flex items-center gap-2">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-4" referrerPolicy="no-referrer" />
-                <span className="text-[8px] font-black text-brand-ink/30 uppercase tracking-widest">ACCEPTED</span>
-              </div>
-              <div className="bg-white px-3 py-2 rounded-lg shadow-sm flex items-center">
-                <Mail size={16} className="text-brand-ink/30" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-10 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-black text-brand-ink/30 uppercase tracking-widest">
-          <div>© 2024 TITAN STUDIO. ALL RIGHTS RESERVED. DESIGNED FOR EXCELLENCE.</div>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-brand-primary transition-colors">INSTAGRAM</a>
-            <a href="#" className="hover:text-brand-primary transition-colors">BEHANCE</a>
-            <a href="#" className="hover:text-brand-primary transition-colors">LINKEDIN</a>
-          </div>
+          </InsightBox>
         </div>
       </div>
-    </footer>
-  );
-};
 
-// --- Main App ---
+      {step === 0 && <RevealBtn onClick={() => setStep(1)} label="🔍 Periksa lebih teliti..." />}
 
-const ChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; sender: string; timestamp: string }[]>([]);
-  const [inputValue, setInputValue] = useState('');
-  const [isArtistMode, setIsArtistMode] = useState(false);
-  const [notifications, setNotifications] = useState<number>(0);
-  const [isTyping, setIsTyping] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [room] = useState(() => `room_${Math.random().toString(36).substr(2, 9)}`);
-
-  const playSound = () => {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3');
-    audio.volume = 0.2;
-    audio.play().catch(() => {}); // Ignore if browser blocks autoplay
-  };
-
-  useEffect(() => {
-    // Join a unique room for the client
-    socket.emit('join_room', isArtistMode ? 'artist_global' : room);
-
-    // Auto-welcome message for new clients
-    if (!isArtistMode && messages.length === 0) {
-      setTimeout(() => {
-        const welcomeMsg = {
-          text: "Hi there! 👋 I'm Titan. How can I help you bring your story to life today?",
-          sender: 'Titan (Artist)',
-          timestamp: new Date().toISOString()
-        };
-        setMessages([welcomeMsg]);
-        if (!isOpen) setNotifications(1);
-      }, 1500);
-    }
-
-    const handleMessage = (data: { text: string; sender: string; timestamp: string }) => {
-      setMessages((prev) => [...prev, data]);
-      if (!isOpen) {
-        setNotifications((prev) => prev + 1);
-        playSound();
-      }
-    };
-
-    const handleNotification = (data: { room: string; text: string; sender: string }) => {
-      if (isArtistMode) {
-        setMessages((prev) => [...prev, { text: `[${data.room}] ${data.text}`, sender: data.sender, timestamp: new Date().toISOString() }]);
-        if (!isOpen) {
-          setNotifications((prev) => prev + 1);
-          playSound();
-        }
-      }
-    };
-
-    const handleTyping = (data: { sender: string }) => {
-      setIsTyping(data.sender);
-    };
-
-    const handleStopTyping = () => {
-      setIsTyping(null);
-    };
-
-    socket.on('receive_message', handleMessage);
-    socket.on('new_chat_notification', handleNotification);
-    socket.on('user_typing', handleTyping);
-    socket.on('user_stop_typing', handleStopTyping);
-
-    return () => {
-      socket.off('receive_message', handleMessage);
-      socket.off('new_chat_notification', handleNotification);
-      socket.off('user_typing', handleTyping);
-      socket.off('user_stop_typing', handleStopTyping);
-    };
-  }, [room, isArtistMode, isOpen]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    
-    // Emit typing event
-    socket.emit('typing', { room: isArtistMode ? 'artist_global' : room, sender: isArtistMode ? 'Titan' : 'Client' });
-
-    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-    
-    typingTimeoutRef.current = setTimeout(() => {
-      socket.emit('stop_typing', { room: isArtistMode ? 'artist_global' : room, sender: isArtistMode ? 'Titan' : 'Client' });
-    }, 2000);
-  };
-
-  const handleSendMessage = (text: string) => {
-    if (!text.trim()) return;
-
-    const messageData = {
-      room: isArtistMode ? 'artist_global' : room,
-      text: text,
-      sender: isArtistMode ? 'Titan (Artist)' : 'Client',
-    };
-
-    socket.emit('send_message', messageData);
-    socket.emit('stop_typing', { room: isArtistMode ? 'artist_global' : room, sender: isArtistMode ? 'Titan' : 'Client' });
-    setInputValue('');
-  };
-
-  const quickReplies = [
-    "How much for a book cover?",
-    "What's your timeline?",
-    "Do you do character design?",
-    "I have a story idea!"
-  ];
-
-  return (
-    <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[100] flex flex-col items-end gap-3 sm:gap-4">
-      {/* Artist Mode Toggle (For Demo) */}
-      <button 
-        onClick={() => setIsArtistMode(!isArtistMode)}
-        className="bg-white/90 backdrop-blur-sm border border-gray-200 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-brand-ink/40 hover:text-brand-primary transition-all shadow-sm hover:shadow-md"
-      >
-        {isArtistMode ? 'Switch to Client View' : 'Switch to Artist View'}
-      </button>
-
+      {/* Step 2: Kesalahan yang sama */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="w-[calc(100vw-2rem)] sm:w-[380px] h-[500px] sm:h-[600px] bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
-          >
-            {/* Header */}
-            <div className="bg-brand-ink p-5 sm:p-8 text-white flex items-center justify-between relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-brand-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="flex items-center gap-3 sm:gap-4 relative z-10">
-                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-brand-primary flex items-center justify-center shadow-lg shadow-brand-primary/20">
-                  <Sparkles size={18} className="text-white sm:hidden" />
-                  <Sparkles size={20} className="text-white hidden sm:block" />
-                </div>
-                <div>
-                  <div className="font-display font-bold text-sm sm:text-lg">
-                    {isArtistMode ? 'Artist Dashboard' : 'Titan Studio'}
+        {step >= 1 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-100 rounded-2xl overflow-hidden mb-4">
+            <div className="px-5 pt-5 pb-3">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Temuan selanjutnya — Kesalahan yang sama</p>
+              <div className="grid grid-cols-2 gap-3">
+                {['A', 'B'].map((s) => (
+                  <div key={s} className="bg-gray-50 rounded-xl p-4">
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Siswa {s}</p>
+                    <div className="text-xs text-gray-600 bg-white rounded-lg p-2.5 mb-2 border border-gray-100">MBG = program makan bergizi gratis ✓</div>
+                    <div className="text-xs text-red-700 bg-red-50 rounded-lg p-2.5 mb-2 border border-red-100">
+                      ❌ "...tujuan utama MBG adalah meningkatkan <u>ekspor pangan nasional</u>..."
+                    </div>
+                    <div className="text-xs text-orange-700 bg-orange-50 rounded-lg p-2.5 mb-2 border border-orange-100">
+                      ❓ "MBG membuat siswa <u>memproduksi makanan sendiri</u> di sekolah."
+                    </div>
+                    <div className="text-xs text-red-700 bg-red-50 rounded-lg p-2.5 border border-red-100">
+                      ❌ "Sasaran utama: <u>semua pelaku usaha makanan</u> di Indonesia"
+                    </div>
                   </div>
-                  <div className="text-[8px] sm:text-[10px] font-bold text-white/40 uppercase tracking-widest flex items-center gap-1 sm:gap-1.5">
-                    <div className="w-1 h-1 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse" />
-                    Online & Ready
-                  </div>
-                </div>
-              </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/40 hover:text-white transition-colors p-1.5 sm:p-2 hover:bg-white/5 rounded-full">
-                <X size={18} className="sm:hidden" />
-                <X size={20} className="hidden sm:block" />
-              </button>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-grow overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6 bg-gray-50/50 scrollbar-hide">
-              {messages.map((msg, i) => (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  key={i} 
-                  className={`flex flex-col ${msg.sender.includes('Titan') ? 'items-start' : 'items-end'}`}
-                >
-                  <div className={`max-w-[90%] sm:max-w-[85%] p-3 sm:p-4 rounded-2xl sm:rounded-3xl text-xs sm:text-sm leading-relaxed ${msg.sender.includes('Titan') ? 'bg-white text-brand-ink shadow-sm rounded-tl-none border border-gray-100' : 'bg-brand-primary text-white shadow-lg shadow-brand-primary/10 rounded-tr-none'}`}>
-                    {msg.text}
-                  </div>
-                  <span className="text-[8px] sm:text-[9px] font-black text-brand-ink/20 uppercase tracking-widest mt-1.5 sm:mt-2 px-2">
-                    {msg.sender} • {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </motion.div>
-              ))}
-              
-              {isTyping && (
-                <div className="flex flex-col items-start">
-                  <div className="bg-white px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl rounded-tl-none border border-gray-100 shadow-sm flex gap-1">
-                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-brand-ink/20 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Quick Replies */}
-            {!isArtistMode && messages.length < 3 && (
-              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-white border-t border-gray-50 flex flex-wrap gap-1.5 sm:gap-2">
-                {quickReplies.map((reply) => (
-                  <button 
-                    key={reply}
-                    onClick={() => handleSendMessage(reply)}
-                    className="text-[9px] sm:text-[10px] font-bold text-brand-ink/60 bg-gray-50 hover:bg-brand-primary/10 hover:text-brand-primary border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all"
-                  >
-                    {reply}
-                  </button>
                 ))}
               </div>
-            )}
-
-            {/* Input */}
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSendMessage(inputValue);
-              }} 
-              className="p-4 sm:p-6 bg-white border-t border-gray-100 flex gap-2 sm:gap-3 items-center"
-            >
-              <div className="flex-grow relative">
-                <input 
-                  type="text" 
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  placeholder="Type your message..."
-                  className="w-full bg-gray-50 border border-gray-100 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-2 sm:py-3.5 text-xs sm:text-sm focus:outline-none focus:border-brand-primary/50 transition-all placeholder:text-brand-ink/20"
-                />
-              </div>
-              <button 
-                type="submit" 
-                disabled={!inputValue.trim()}
-                className="bg-brand-primary text-white w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center hover:bg-brand-primary-hover transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:shadow-none shrink-0"
-              >
-                <Send size={16} className="sm:hidden" />
-                <Send size={18} className="hidden sm:block" />
-              </button>
-            </form>
+            </div>
+            <div className="px-5 pb-5">
+              <InsightBox color="red">
+                <p className="text-sm">
+                  <strong>Ini bukan lagi soal kemiripan yang benar.</strong> Kesalahan sama, di bagian sama, kalimat janggal sama. Kisi-kisi yang sama tidak menghasilkan kesalahan yang identik.
+                </p>
+              </InsightBox>
+              {step === 1 && <RevealBtn onClick={() => setStep(2)} label="📊 Lihat bagaimana bobot hipotesis berubah" />}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Floating Button */}
-      <div className="relative">
-        <button 
-          onClick={() => {
-            setIsOpen(!isOpen);
-            setNotifications(0);
-          }}
-          className={`w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-[2rem] flex items-center justify-center shadow-2xl transition-all duration-500 relative group ${notifications > 0 ? 'bg-brand-secondary text-brand-ink scale-110' : 'bg-brand-primary text-white hover:scale-110'}`}
-        >
-          {isOpen ? <X size={24} className="sm:hidden" /> : <MessageCircle size={24} className="sm:hidden group-hover:rotate-12 transition-transform" />}
-          {isOpen ? <X size={32} className="hidden sm:block" /> : <MessageCircle size={32} className="hidden sm:block group-hover:rotate-12 transition-transform" />}
-          
-          {notifications > 0 && (
-            <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-brand-ink text-white text-[10px] sm:text-[12px] font-black rounded-full flex items-center justify-center border-2 sm:border-4 border-white animate-bounce shadow-lg">
-              {notifications}
+      {/* Step 3: Probability shift */}
+      <AnimatePresence>
+        {step >= 2 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-100 rounded-2xl p-5 mb-4">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Setiap bukti baru menggeser bobot penjelasan</p>
+            <div className="flex flex-col gap-5">
+              {probData.map((d, i) => (
+                <motion.div key={d.label} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}>
+                  <p className="text-xs font-semibold text-gray-600 mb-2">{d.label}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-purple-500 font-bold w-20 shrink-0">Sist. Sama</span>
+                    <div className="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-purple-400 rounded-full flex items-center justify-end pr-2"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${d.sumber}%` }}
+                        transition={{ duration: 0.7, delay: i * 0.15 }}
+                      >
+                        <span className="text-white text-[10px] font-bold">{d.sumber}%</span>
+                      </motion.div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs text-blue-600 font-bold w-20 shrink-0">Com. Anc.</span>
+                    <div className="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-blue-500 rounded-full flex items-center justify-end pr-2"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${d.nenek}%` }}
+                        transition={{ duration: 0.7, delay: i * 0.15 }}
+                      >
+                        <span className="text-white text-[10px] font-bold">{d.nenek}%</span>
+                      </motion.div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          )}
-        </button>
-        
-        {/* Pulse effect when unread */}
-        {notifications > 0 && !isOpen && (
-          <div className="absolute inset-0 bg-brand-secondary rounded-2xl sm:rounded-[2rem] animate-ping opacity-20 -z-10" />
+            <InsightBox color="blue">
+              <p className="text-sm font-semibold">
+                Semua kemungkinan masih <em>mungkin</em> — tapi tidak semua sama kuatnya. Semakin banyak rincian spesifik (terutama yang rusak atau janggal), semakin jauh satu hipotesis meninggalkan yang lain.
+              </p>
+            </InsightBox>
+          </motion.div>
         )}
+      </AnimatePresence>
+
+      <NavButtons onPrev={onPrev} onNext={onNext} prevLabel="← Intro" nextLabel="Bukti 1: GULO →" />
+    </div>
+  );
+};
+
+// ─── Section 2: GULO ─────────────────────────────────────────────────────────
+const SectionGULO = ({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) => {
+  const [step, setStep] = useState(0);
+
+  const species = [
+    { name: 'Tikus', functional: true, color: 'bg-green-500' },
+    { name: 'Manusia', functional: false, color: 'bg-red-400' },
+    { name: 'Simpanse', functional: false, color: 'bg-red-400' },
+    { name: 'Gorilla', functional: false, color: 'bg-red-400' },
+    { name: 'Orang Utan', functional: false, color: 'bg-red-400' },
+  ];
+
+  return (
+    <div>
+      <Label>Bagian 2 dari 5 · Bukti 1</Label>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Pseudogen GULO: Gen yang Rusak di Tempat yang Sama</h2>
+
+      <p className="text-gray-600 leading-relaxed mb-5">
+        Hampir semua mamalia bisa membuat <strong>vitamin C sendiri</strong> di dalam tubuh menggunakan enzim dari gen <strong>GULO</strong>. Tapi tidak semua makhluk punya gen GULO yang berfungsi.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 border-t-4 border-t-green-500">
+          <Label color="text-green-700">Gen GULO Fungsional</Label>
+          <p className="text-sm text-gray-600 mb-3">Tikus, anjing, kucing, sapi — semuanya punya GULO yang bekerja. Mereka bisa mensintesis vitamin C sendiri.</p>
+          <div className="bg-green-50 text-green-700 text-xs font-bold rounded-lg px-3 py-2">✓ Dapat membuat vitamin C</div>
+        </div>
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 border-t-4 border-t-red-400">
+          <Label color="text-red-600">Gen GULO Rusak (Pseudogen)</Label>
+          <p className="text-sm text-gray-600 mb-3">Manusia, simpanse, gorilla, orang utan — semuanya punya gen GULO yang <strong>tidak berfungsi</strong>. Makanya kita butuh vitamin C dari makanan.</p>
+          <div className="bg-red-50 text-red-600 text-xs font-bold rounded-lg px-3 py-2">✗ Tidak dapat membuat vitamin C</div>
+        </div>
+      </div>
+
+      {step === 0 && <RevealBtn onClick={() => setStep(1)} label="🧬 Lihat di mana gen GULO-nya rusak" />}
+
+      <AnimatePresence>
+        {step >= 1 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-100 rounded-2xl p-5 mb-4">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Peta gen GULO di berbagai spesies</p>
+
+            <div className="flex flex-col gap-4">
+              {species.map((sp) => (
+                <div key={sp.name}>
+                  <p className="text-sm font-semibold text-gray-700 mb-1.5">{sp.name}</p>
+                  {sp.functional ? (
+                    <div className="h-9 bg-green-500 rounded-xl flex items-center justify-center text-white text-xs font-bold">
+                      GEN GULO LENGKAP — AKTIF ✓
+                    </div>
+                  ) : (
+                    <div className="flex h-9 rounded-xl overflow-hidden">
+                      <div className="flex-1 bg-gray-300 flex items-center justify-center text-gray-600 text-[10px] font-semibold">sebagian ada</div>
+                      <div className="w-[18%] bg-red-400 flex items-center justify-center text-white text-[10px] font-bold">RUSAK</div>
+                      <div className="flex-1 bg-gray-300 flex items-center justify-center text-gray-600 text-[10px] font-semibold">sebagian ada</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-center text-sm font-bold text-red-600">
+              ↑ Kerusakan terjadi di lokasi yang SAMA pada semua primata
+            </div>
+
+            {step === 1 && <RevealBtn onClick={() => setStep(2)} label="🤔 Apa artinya ini untuk dua hipotesis kita?" />}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {step >= 2 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <HypothesisCard
+                title="Hipotesis: Sistem yang Sama"
+                color="border-t-purple-500"
+                body="Pencipta merancang gen GULO yang rusak pada semua primata secara sengaja, di lokasi yang sama."
+                note="Mengapa pencipta yang sempurna merancang 'gen rusak' yang identik pada semua primata? Apa fungsi kerusakannya?"
+                pct={20}
+                barColor="red"
+                strength="Daya jelas: Lemah"
+                strengthColor="text-red-500"
+              />
+              <HypothesisCard
+                title="Hipotesis: Common Ancestry"
+                color="border-t-blue-600"
+                body="Gen GULO rusak sekali pada nenek moyang bersama primata. Kerusakan itu diwariskan ke semua keturunannya — manusia, simpanse, gorilla."
+                note="Seperti analogi: kesalahan yang sama di tempat yang sama = sumber yang sama."
+                pct={90}
+                barColor="green"
+                strength="Daya jelas: Kuat"
+                strengthColor="text-green-600"
+              />
+            </div>
+            <InsightBox color="blue">
+              <p className="text-sm font-semibold">
+                Gen yang rusak tidak punya manfaat fungsional. Tidak ada alasan desain untuk meletakkan "kerusakan" di tempat yang sama persis. Tapi kalau kerusakannya diwariskan dari nenek moyang bersama — <strong>itu sangat masuk akal.</strong>
+              </p>
+            </InsightBox>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <NavButtons onPrev={onPrev} onNext={onNext} prevLabel="← Analogi" nextLabel="Bukti 2: ERV →" />
+    </div>
+  );
+};
+
+// ─── Section 3: ERV ──────────────────────────────────────────────────────────
+const SectionERV = ({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) => {
+  const [step, setStep] = useState(0);
+  const [markersShown, setMarkersShown] = useState(false);
+
+  const ervPositions = [13, 27, 44, 61, 79]; // % positions on the chromosome bar
+  const species = ['Manusia', 'Simpanse', 'Gorilla'];
+
+  return (
+    <div>
+      <Label>Bagian 3 dari 5 · Bukti 2</Label>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Endogenous Retrovirus (ERV): Bekas Infeksi di Tempat yang Sama</h2>
+
+      <p className="text-gray-600 leading-relaxed mb-4">
+        Virus bisa menginfeksi sel dan menyisipkan DNA-nya ke dalam genom inang. Kalau infeksi terjadi pada{' '}
+        <strong>sel reproduksi</strong>, sisipan itu akan diwariskan ke generasi berikutnya.
+      </p>
+
+      <InsightBox color="amber">
+        <p className="text-sm">
+          Sisipan virus yang diwariskan ini disebut <strong>Endogenous Retrovirus (ERV)</strong>. Sekali masuk ke DNA garis keturunan, ia akan terus ada di semua keturunannya.
+        </p>
+      </InsightBox>
+
+      {step === 0 && <RevealBtn onClick={() => setStep(1)} label="🦠 Lihat ERV di berbagai spesies" />}
+
+      <AnimatePresence>
+        {step >= 1 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-100 rounded-2xl p-5 mt-4 mb-4">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Peta kromosom — titik merah = lokasi ERV</p>
+
+            <div className="flex flex-col gap-5">
+              {species.map((sp, idx) => (
+                <div key={sp}>
+                  <p className="text-sm font-semibold text-gray-700 mb-2">{sp}</p>
+                  <div className="relative h-7 bg-indigo-400 rounded-full overflow-visible">
+                    {markersShown &&
+                      ervPositions.map((pos, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+                          style={{ left: `${pos}%` }}
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: idx * (ervPositions.length * 0.1) + i * 0.1 }}
+                        >
+                          <div className="w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white shadow-md" />
+                        </motion.div>
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {!markersShown ? (
+              <button
+                onClick={() => setMarkersShown(true)}
+                className="w-full mt-5 py-3 px-6 border-2 border-dashed border-gray-300 rounded-xl text-sm font-semibold text-gray-500 hover:border-red-400 hover:text-red-500 hover:bg-red-50 transition-all"
+              >
+                📍 Tampilkan lokasi ERV
+              </button>
+            ) : (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
+                <div className="mt-4 bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-sm font-bold text-red-600 text-center">
+                  ERV yang sama ditemukan di lokasi yang IDENTIK pada ketiga spesies
+                </div>
+                {step === 1 && <RevealBtn onClick={() => setStep(2)} label="🤔 Apa artinya untuk dua hipotesis kita?" />}
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {step >= 2 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <HypothesisCard
+                title="Hipotesis: Sistem yang Sama"
+                color="border-t-purple-500"
+                body="Pencipta menyisipkan bekas DNA virus yang tidak berfungsi di lokasi yang sama pada manusia, simpanse, dan gorilla — tanpa alasan fungsi yang jelas."
+                note="ERV adalah bekas infeksi — bukan bagian dari 'desain.' Mengapa desainer memasukkan bekas virus di lokasi yang identik?"
+                pct={10}
+                barColor="red"
+                strength="Daya jelas: Sangat lemah"
+                strengthColor="text-red-500"
+              />
+              <HypothesisCard
+                title="Hipotesis: Common Ancestry"
+                color="border-t-blue-600"
+                body="Virus menginfeksi sel reproduksi nenek moyang bersama primata sekali. Sisipan diwariskan ke semua keturunannya — di lokasi yang sama karena memang dari sumber yang sama."
+                note="Probabilitas ERV yang sama nyangkut di lokasi identik secara kebetulan: astronomis kecil."
+                pct={95}
+                barColor="green"
+                strength="Daya jelas: Sangat kuat"
+                strengthColor="text-green-600"
+              />
+            </div>
+            <InsightBox color="blue">
+              <p className="text-sm font-semibold">
+                ERV bukan sekadar kemiripan — ini <em>bekas infeksi</em>. Tidak ada alasan fungsional untuk meletakkannya di lokasi yang sama. Satu-satunya penjelasan alami adalah warisan dari nenek moyang bersama.
+              </p>
+            </InsightBox>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <NavButtons onPrev={onPrev} onNext={onNext} prevLabel="← GULO" nextLabel="Bukti 3: Kromosom 2 →" />
+    </div>
+  );
+};
+
+// ─── Section 4: Kromosom 2 ───────────────────────────────────────────────────
+const SectionKromosom = ({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) => {
+  const [step, setStep] = useState(0);
+  const [showTelomere, setShowTelomere] = useState(false);
+
+  return (
+    <div>
+      <Label>Bagian 4 dari 5 · Bukti 3</Label>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Kromosom 2 Manusia: Bekas Penyatuan Dua Kromosom</h2>
+
+      <p className="text-gray-600 leading-relaxed mb-5">Ini salah satu bukti paling langsung yang ada di genomik.</p>
+
+      <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 text-center">
+          <div className="text-5xl font-black text-blue-600 mb-1">46</div>
+          <div className="font-bold text-gray-800">Kromosom Manusia</div>
+          <div className="text-xs text-gray-400 mt-1">23 pasang</div>
+        </div>
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 text-center">
+          <div className="text-5xl font-black text-indigo-500 mb-1">48</div>
+          <div className="font-bold text-gray-800">Kromosom Simpanse</div>
+          <div className="text-xs text-gray-400 mt-1">24 pasang</div>
+        </div>
+      </div>
+
+      <p className="text-gray-600 text-sm leading-relaxed mb-5">
+        Manusia punya 2 kromosom lebih sedikit dari simpanse, gorilla, dan orang utan. <strong>Ke mana 2 kromosom yang "hilang"?</strong>
+      </p>
+
+      {step === 0 && <RevealBtn onClick={() => setStep(1)} label="🔬 Lihat apa yang ditemukan ilmuwan" />}
+
+      <AnimatePresence>
+        {step >= 1 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-100 rounded-2xl p-5 mb-4">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">Visualisasi Fusi Kromosom</p>
+
+            <div className="flex items-start justify-center gap-6 sm:gap-10 flex-wrap">
+              {/* Chimp chromosomes */}
+              <div className="text-center">
+                <p className="text-sm font-bold text-indigo-500 mb-3">Simpanse</p>
+                <div className="flex gap-4 justify-center">
+                  {[
+                    { h: 100, centromere: 60 },
+                    { h: 100, centromere: 35 },
+                  ].map((chr, i) => (
+                    <div key={i} className="flex flex-col items-center">
+                      <div
+                        className="w-10 rounded-3xl bg-indigo-400 relative"
+                        style={{ height: chr.h }}
+                      >
+                        <div
+                          className="absolute left-0 right-0 h-1 bg-white/50"
+                          style={{ top: chr.centromere }}
+                        />
+                        {/* telomere at bottom */}
+                        <div className="absolute bottom-0 left-1 right-1 h-3 bg-yellow-400 rounded-b-3xl" />
+                        {i === 1 && <div className="absolute top-0 left-1 right-1 h-3 bg-yellow-400 rounded-t-3xl" />}
+                      </div>
+                      <p className="text-xs text-gray-400 mt-2">Chr {i === 0 ? '2a' : '2b'}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div className="flex items-center pt-12 text-3xl text-gray-300">→</div>
+
+              {/* Human chromosome */}
+              <div className="text-center">
+                <p className="text-sm font-bold text-blue-600 mb-3">Manusia</p>
+                <div className="flex flex-col items-center">
+                  <div className="w-10 rounded-3xl bg-blue-500 relative" style={{ height: 180 }}>
+                    {/* centromere 1 */}
+                    <div className="absolute left-0 right-0 h-1 bg-white/50" style={{ top: 65 }} />
+                    {/* centromere 2 (vestigial) */}
+                    <div className="absolute left-0 right-0 h-1 bg-white/30" style={{ top: 120 }} />
+                    {/* internal telomere */}
+                    <AnimatePresence>
+                      {showTelomere && (
+                        <motion.div
+                          className="absolute left-1 right-1 bg-yellow-400"
+                          style={{ top: 83, height: 14 }}
+                          initial={{ opacity: 0, scaleX: 0 }}
+                          animate={{ opacity: 1, scaleX: 1 }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2">Kromosom 2</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-wrap gap-4 mt-5 justify-center text-xs text-gray-500">
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 rounded-full bg-yellow-400" />
+                <span>Telomere</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-8 h-1 bg-white/50 bg-gray-400 rounded" />
+                <span>Sentromer</span>
+              </div>
+            </div>
+
+            {!showTelomere ? (
+              <button
+                onClick={() => setShowTelomere(true)}
+                className="w-full mt-5 py-3 px-6 border-2 border-dashed border-gray-300 rounded-xl text-sm font-semibold text-gray-500 hover:border-yellow-400 hover:text-yellow-600 hover:bg-yellow-50 transition-all"
+              >
+                💡 Tampilkan bekas telomere di tengah kromosom 2 manusia
+              </button>
+            ) : (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <div className="mt-4 bg-yellow-50 border border-yellow-100 rounded-xl px-4 py-3 text-sm text-yellow-800">
+                  <strong>Kotak kuning di tengah = bekas telomere.</strong> Telomere normalnya hanya ada di ujung kromosom. Tapi di kromosom 2 manusia, ada urutan telomere di <em>tengah</em> — sisa dari ketika dua kromosom bergabung: ujung satu bertemu ujung lain.
+                </div>
+                {step === 1 && <RevealBtn onClick={() => setStep(2)} label="🤔 Apa artinya untuk dua hipotesis kita?" />}
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {step >= 2 && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <HypothesisCard
+                title="Hipotesis: Sistem yang Sama"
+                color="border-t-purple-500"
+                body="Pencipta merancang kromosom 2 manusia dengan menyertakan urutan telomere di tengah — yang secara struktural terlihat persis seperti bekas penyatuan."
+                note="Untuk apa mendesain kromosom dengan 'bekas penyatuan' yang tidak berfungsi dan tidak ada di spesies lain?"
+                pct={8}
+                barColor="red"
+                strength="Daya jelas: Sangat lemah"
+                strengthColor="text-red-500"
+              />
+              <HypothesisCard
+                title="Hipotesis: Common Ancestry"
+                color="border-t-blue-600"
+                body="Pada nenek moyang manusia, dua kromosom bergabung. Hasilnya manusia punya 46 kromosom. Bekas telomere di tengah adalah bukti fisik dari peristiwa fusi itu."
+                note="Dua sentromer, telomere di tengah, urutan yang cocok dengan dua kromosom simpanse."
+                pct={95}
+                barColor="green"
+                strength="Daya jelas: Sangat kuat"
+                strengthColor="text-green-600"
+              />
+            </div>
+            <InsightBox color="blue">
+              <p className="text-sm font-semibold">
+                Kromosom 2 manusia membawa "sidik jari" dari peristiwa penyatuan. Ini bukan kemiripan abstrak — ini jejak fisik yang tertulis di DNA.
+              </p>
+            </InsightBox>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <NavButtons onPrev={onPrev} onNext={onNext} prevLabel="← ERV" nextLabel="Ringkasan →" />
+    </div>
+  );
+};
+
+// ─── Section 5: Ringkasan ────────────────────────────────────────────────────
+const SectionRingkasan = ({ onPrev, onRestart }: { onPrev: () => void; onRestart: () => void }) => {
+  const rows = [
+    {
+      bukti: 'GULO Pseudogen',
+      sub: 'Gen rusak di lokasi sama',
+      slemah: 'Tidak ada alasan desain untuk kerusakan identik',
+      skuat: 'Diwariskan sekali dari nenek moyang bersama',
+      pctWeak: 20,
+      pctStrong: 90,
+    },
+    {
+      bukti: 'ERV',
+      sub: 'Bekas virus di lokasi sama',
+      slemah: 'Mengapa mendesain bekas infeksi virus?',
+      skuat: 'Infeksi sekali pada nenek moyang → diwariskan',
+      pctWeak: 10,
+      pctStrong: 95,
+    },
+    {
+      bukti: 'Kromosom 2',
+      sub: 'Telomere di tengah kromosom',
+      slemah: 'Mengapa mendesain bekas penyatuan yang fiktif?',
+      skuat: 'Jejak fisik peristiwa fusi kromosom',
+      pctWeak: 8,
+      pctStrong: 95,
+    },
+  ];
+
+  return (
+    <div>
+      <Label>Bagian 5 dari 5 · Ringkasan</Label>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Hipotesis Mana yang Paling Kuat?</h2>
+
+      <p className="text-gray-600 leading-relaxed mb-6">
+        Tiga jenis bukti berbeda, datang dari arah yang berbeda. Sekarang kita timbang keduanya secara jujur.
+      </p>
+
+      {/* Comparison table */}
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden mb-5">
+        <div className="grid grid-cols-[1fr_1fr_1fr] bg-gray-50 border-b border-gray-100">
+          <div className="px-4 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Bukti</div>
+          <div className="px-4 py-3 text-xs font-bold text-purple-500 uppercase tracking-wider border-l border-gray-100">Sistem yang Sama</div>
+          <div className="px-4 py-3 text-xs font-bold text-blue-600 uppercase tracking-wider border-l border-gray-100">Common Ancestry</div>
+        </div>
+        {rows.map((row, i) => (
+          <div key={row.bukti} className={`grid grid-cols-[1fr_1fr_1fr] ${i < rows.length - 1 ? 'border-b border-gray-50' : ''}`}>
+            <div className="px-4 py-4">
+              <p className="text-sm font-bold text-gray-800">{row.bukti}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{row.sub}</p>
+            </div>
+            <div className="px-4 py-4 border-l border-gray-50">
+              <span className="inline-block text-xs font-bold bg-red-50 text-red-500 rounded-full px-2.5 py-0.5 mb-1">Lemah</span>
+              <StrengthBar pct={row.pctWeak} color="red" />
+              <p className="text-xs text-gray-400 mt-2">{row.slemah}</p>
+            </div>
+            <div className="px-4 py-4 border-l border-gray-50">
+              <span className="inline-block text-xs font-bold bg-green-50 text-green-600 rounded-full px-2.5 py-0.5 mb-1">Kuat</span>
+              <StrengthBar pct={row.pctStrong} color="green" />
+              <p className="text-xs text-gray-400 mt-2">{row.skuat}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <InsightBox color="dark">
+        <p className="text-sm text-gray-200 mb-3">
+          Hipotesis "sistem yang sama" bisa menjelaskan kemiripan pada bagian yang <em>fungsional</em>. Tapi ia kesulitan menjelaskan:
+        </p>
+        <ul className="text-sm text-gray-200 list-disc pl-5 space-y-1 mb-3">
+          <li>Gen yang <strong className="text-white">rusak</strong> di tempat yang sama</li>
+          <li>Bekas <strong className="text-white">infeksi virus</strong> di lokasi identik</li>
+          <li>Struktur kromosom dengan <strong className="text-white">tanda penyatuan</strong> yang khas</li>
+        </ul>
+        <p className="text-sm text-blue-300 font-semibold">
+          Common ancestry tidak perlu membuat alasan baru untuk setiap bukti. Satu penjelasan menanggung semuanya.
+        </p>
+      </InsightBox>
+
+      <InsightBox color="blue">
+        <p className="text-sm font-semibold leading-relaxed">
+          <strong>Ingat analogi ujian:</strong> Kemiripan jawaban yang benar bisa terjadi karena belajar dari sumber yang sama. Tapi kesalahan yang sama, di tempat yang sama — itu butuh penjelasan yang lebih spesifik.
+          <br /><br />
+          Dalam DNA: gen rusak, bekas virus, dan bekas penyatuan kromosom adalah "kesalahan" tersebut.
+        </p>
+      </InsightBox>
+
+      {/* Final verdict */}
+      <div className="mt-5 bg-white border border-gray-100 rounded-2xl p-5">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Kesimpulan</p>
+        <p className="text-sm text-gray-700 leading-relaxed">
+          <strong>Yang terpenting bukan sekadar "apakah ada penjelasan alternatif."</strong> Hampir selalu ada. Yang terpenting adalah: <em>penjelasan mana yang paling kuat menanggung seluruh rincian data?</em>
+        </p>
+        <p className="text-sm text-gray-700 leading-relaxed mt-3">
+          Kalau satu penjelasan bisa menampung banyak jejak sekaligus — kemiripan umum, perbedaan bertingkat, gen rusak, ERV, kromosom 2 — sementara penjelasan lain harus terus mencari alasan baru setiap kali ada contoh baru, kita sudah tahu mana yang lebih kuat.
+        </p>
+      </div>
+
+      <div className="mt-5 bg-gray-50 rounded-2xl p-5 border border-gray-100">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Lanjut membaca</p>
+        <p className="text-sm text-gray-600">
+          Demo ini bagian dari artikel <strong>"DNA Mirip Karena Nenek Moyang yang Sama, atau Karena Sistem yang Sama?"</strong> di Fahrezi Institute. Artikel lengkapnya membahas lebih jauh — termasuk bagaimana matematika bisa menutup perdebatan ini secara definitif.
+        </p>
+      </div>
+
+      <div className="flex gap-3 mt-8 pt-6 border-t border-gray-100">
+        <button
+          onClick={onPrev}
+          className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-all"
+        >
+          ← Kromosom 2
+        </button>
+        <button
+          onClick={onRestart}
+          className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-all ml-auto"
+        >
+          ↺ Mulai Ulang
+        </button>
       </div>
     </div>
   );
 };
 
+// ─── Nav Dots ────────────────────────────────────────────────────────────────
+const sectionMeta = [
+  { label: 'Intro' },
+  { label: 'Analogi' },
+  { label: 'GULO' },
+  { label: 'ERV' },
+  { label: 'Kromosom 2' },
+  { label: 'Ringkasan' },
+];
+
+const TopNav = ({ current, total, onGoto }: { current: number; total: number; onGoto: (i: number) => void }) => (
+  <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between">
+    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider hidden sm:block">
+      Fahrezi Institute · Demo Artikel
+    </span>
+    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider sm:hidden">FI Demo</span>
+
+    <div className="flex items-center gap-2">
+      {sectionMeta.map((s, i) => (
+        <button
+          key={s.label}
+          onClick={() => onGoto(i)}
+          title={s.label}
+          className={`transition-all rounded-full ${
+            i === current
+              ? 'w-6 h-2 bg-blue-600'
+              : i < current
+              ? 'w-2 h-2 bg-gray-300'
+              : 'w-2 h-2 bg-gray-200'
+          }`}
+        />
+      ))}
+    </div>
+
+    <span className="text-xs font-semibold text-gray-400">
+      {current + 1} / {total}
+    </span>
+  </nav>
+);
+
+// ─── Main App ────────────────────────────────────────────────────────────────
 export default function App() {
+  const [section, setSection] = useState<Section>(0);
+
+  const goTo = (n: number) => {
+    setSection(n as Section);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const sections: Record<Section, React.ReactNode> = {
+    0: <SectionIntro onNext={() => goTo(1)} />,
+    1: <SectionAnalogi onPrev={() => goTo(0)} onNext={() => goTo(2)} />,
+    2: <SectionGULO onPrev={() => goTo(1)} onNext={() => goTo(3)} />,
+    3: <SectionERV onPrev={() => goTo(2)} onNext={() => goTo(4)} />,
+    4: <SectionKromosom onPrev={() => goTo(3)} onNext={() => goTo(5)} />,
+    5: <SectionRingkasan onPrev={() => goTo(4)} onRestart={() => goTo(0)} />,
+  };
+
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <Stats />
-      <Services />
-      <Gallery />
-      <About />
-      <Features />
-      <Contact />
-      <Footer />
-      <ChatWidget />
+    <div className="min-h-screen bg-gray-50">
+      <TopNav current={section} total={sectionMeta.length} onGoto={goTo} />
+
+      <div className="max-w-2xl mx-auto px-4 pt-20 pb-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={section}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {sections[section]}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
